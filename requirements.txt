@@ -1,0 +1,8 @@
+ollama 
+numpy 
+pandas 
+tqdm 
+faiss-cpu 
+rank-bm25
+networkx
+matplotlib

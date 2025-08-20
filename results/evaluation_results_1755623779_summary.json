@@ -1,0 +1,57 @@
+{
+  "file": "results/evaluation_results_1755623779.csv",
+  "summary": [
+    {
+      "method": "vulrag",
+      "samples": 100,
+      "errors": 0,
+      "accuracy": 0.63,
+      "precision": 0.696969696969697,
+      "recall": 0.46,
+      "f1": 0.5542168674698795,
+      "tp": 23,
+      "fp": 10,
+      "tn": 40,
+      "fn": 27
+    },
+    {
+      "method": "Raw LLM",
+      "samples": 100,
+      "errors": 0,
+      "accuracy": 0.52,
+      "precision": 0.5263157894736842,
+      "recall": 0.4,
+      "f1": 0.45454545454545453,
+      "tp": 20,
+      "fp": 18,
+      "tn": 32,
+      "fn": 30
+    },
+    {
+      "method": "Structural Only",
+      "samples": 100,
+      "errors": 0,
+      "accuracy": 0.57,
+      "precision": 0.6666666666666666,
+      "recall": 0.28,
+      "f1": 0.3943661971830986,
+      "tp": 14,
+      "fp": 7,
+      "tn": 43,
+      "fn": 36
+    },
+    {
+      "method": "structuaral_vulrag",
+      "samples": 100,
+      "errors": 0,
+      "accuracy": 0.63,
+      "precision": 0.6857142857142857,
+      "recall": 0.48,
+      "f1": 0.5647058823529412,
+      "tp": 24,
+      "fp": 11,
+      "tn": 39,
+      "fn": 26
+    }
+  ]
+}
