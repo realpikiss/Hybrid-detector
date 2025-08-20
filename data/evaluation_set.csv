@@ -727,7 +727,7 @@ out:
 +			}
  			console_unlock();
  		}
- 		break;","			struct vc_data *vcp;\n\n			vcp = vc_cons[i].d;\n			if (vcp) {\n				if (v.v_vlin)\n					vcp->vc_scan_lines = v.v_vlin;\n				if (v.v_clin)\n					vcp->vc_font.height = v.v_clin;\n				vcp->vc_resize_user = 1;\n				vc_resize(vcp, v.v_cols, v.v_rows);\n			}","			if (v.v_vlin)\n				vc_cons[i].d->vc_scan_lines = v.v_vlin;\n			if (v.v_clin)\n				vc_cons[i].d->vc_font.height = v.v_clin;\n			vc_cons[i].d->vc_resize_user = 1;\n			vc_resize(vc_cons[i].d, v.v_cols, v.v_rows);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_p_patch.cpg.json
+ 		break;","			struct vc_data *vcp;\n\n			vcp = vc_cons[i].d;\n			if (vcp) {\n				if (v.v_vlin)\n					vcp->vc_scan_lines = v.v_vlin;\n				if (v.v_clin)\n					vcp->vc_font.height = v.v_clin;\n				vcp->vc_resize_user = 1;\n				vc_resize(vcp, v.v_cols, v.v_rows);\n			}","			if (v.v_vlin)\n				vc_cons[i].d->vc_scan_lines = v.v_vlin;\n			if (v.v_clin)\n				vc_cons[i].d->vc_font.height = v.v_clin;\n			vc_cons[i].d->vc_resize_user = 1;\n			vc_resize(vc_cons[i].d, v.v_cols, v.v_rows);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_p_patch.cpg.json
 pair_00342,CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_p,0,"static void sixpack_close(struct tty_struct *tty)
 {
 	struct sixpack *sp;
@@ -776,7 +776,7 @@ pair_00342,CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_p,0,"static 
 -	unregister_netdev(sp->dev);
  
  	/* Free all 6pack frame buffers after unreg. */
- 	kfree(sp->rbuff);",	unregister_netdev(sp->dev);\n,\n	unregister_netdev(sp->dev);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_p_patch.cpg.json
+ 	kfree(sp->rbuff);",	unregister_netdev(sp->dev);\n,\n	unregister_netdev(sp->dev);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_p_patch.cpg.json
 pair_00239,CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_p,0,"static void copy_peercred(struct sock *sk, struct sock *peersk)
 {
 	const struct cred *old_cred;
@@ -827,7 +827,7 @@ pair_00239,CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_p,0,"static 
 +
 +	put_pid(old_pid);
 +	put_cred(old_cred);
- }","	const struct cred *old_cred;\n	struct pid *old_pid;\n\n	if (sk < peersk) {\n		spin_lock(&sk->sk_peer_lock);\n		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);\n	} else {\n		spin_lock(&peersk->sk_peer_lock);\n		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);\n	}\n	old_pid = sk->sk_peer_pid;\n	old_cred = sk->sk_peer_cred;\n\n	spin_unlock(&sk->sk_peer_lock);\n	spin_unlock(&peersk->sk_peer_lock);\n\n	put_pid(old_pid);\n	put_cred(old_cred);",	put_pid(sk->sk_peer_pid);\n	if (sk->sk_peer_cred)\n		put_cred(sk->sk_peer_cred);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_p_patch.cpg.json
+ }","	const struct cred *old_cred;\n	struct pid *old_pid;\n\n	if (sk < peersk) {\n		spin_lock(&sk->sk_peer_lock);\n		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);\n	} else {\n		spin_lock(&peersk->sk_peer_lock);\n		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);\n	}\n	old_pid = sk->sk_peer_pid;\n	old_cred = sk->sk_peer_cred;\n\n	spin_unlock(&sk->sk_peer_lock);\n	spin_unlock(&peersk->sk_peer_lock);\n\n	put_pid(old_pid);\n	put_cred(old_cred);",	put_pid(sk->sk_peer_pid);\n	if (sk->sk_peer_cred)\n		put_cred(sk->sk_peer_cred);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_p_patch.cpg.json
 pair_00051,CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_v,1,"int indx_read(struct ntfs_index *indx, struct ntfs_inode *ni, CLST vbn,
 	      struct indx_node **node)
 {
@@ -926,7 +926,7 @@ out:
 +
  	if (err == -E_NTFS_FIXUP) {
  		ntfs_write_bh(ni->mi.sbi, &ib->rhdr, &in->nb, 0);
- 		err = 0;","	if (!index_buf_check(ib, bytes, &vbn)) {\n		ntfs_inode_err(&ni->vfs_inode, ""directory corrupted"");\n		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);\n		err = -EINVAL;\n		goto out;\n	}\n",,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_v_vuln.cpg.json
+ 		err = 0;","	if (!index_buf_check(ib, bytes, &vbn)) {\n		ntfs_inode_err(&ni->vfs_inode, ""directory corrupted"");\n		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);\n		err = -EINVAL;\n		goto out;\n	}\n",,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_v_vuln.cpg.json
 pair_00354,CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_v,1,"unsigned long insn_get_seg_base(struct pt_regs *regs, int seg_reg_idx)
 {
 	struct desc_struct *desc;
@@ -993,7 +993,7 @@ pair_00354,CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_v,1,"unsign
  
 -	return get_desc_base(desc);
 +	return get_desc_base(&desc);
- }","	struct desc_struct desc;\n	if (!get_desc(&desc, sel))\n	return get_desc_base(&desc);",	struct desc_struct *desc;\n	desc = get_desc(sel);\n	if (!desc)\n	return get_desc_base(desc);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_v_vuln.cpg.json
+ }","	struct desc_struct desc;\n	if (!get_desc(&desc, sel))\n	return get_desc_base(&desc);",	struct desc_struct *desc;\n	desc = get_desc(sel);\n	if (!desc)\n	return get_desc_base(desc);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_v_vuln.cpg.json
 pair_00111,CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_v,1,"static int lme2510_identify_state(struct dvb_usb_device *d, const char **name)
 {
 	struct lme2510_state *st = d->priv;
@@ -1037,7 +1037,7 @@ pair_00111,CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_v,1,"static 
 +		return -EINVAL;
 +
 +	return WARM;
- }",	int status;\n	status = lme2510_return_status(d);\n	if (status == 0x44) {\n	if (status != 0x47)\n		return -EINVAL;\n\n	return WARM;,	if (lme2510_return_status(d) == 0x44) {\n	return 0;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_v_vuln.cpg.json
+ }",	int status;\n	status = lme2510_return_status(d);\n	if (status == 0x44) {\n	if (status != 0x47)\n		return -EINVAL;\n\n	return WARM;,	if (lme2510_return_status(d) == 0x44) {\n	return 0;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_v_vuln.cpg.json
 pair_00562,CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_v,1,"static int con_font_get(struct vc_data *vc, struct console_font_op *op)
 {
 	struct console_font font;
@@ -1110,7 +1110,7 @@ out:
 +		rc = -ENOSPC;
  	if (rc)
  		goto out;
- ",	if (font.width > op->width || font.height > op->height)\n		rc = -ENOSPC;,	if (!(op->flags & KD_FONT_FLAG_OLD)) {\n		if (font.width > op->width || font.height > op->height)\n			rc = -ENOSPC;\n	} else {\n		if (font.width != 8)\n			rc = -EIO;\n		else if ((op->height && font.height > op->height) ||\n			 font.height > 32)\n			rc = -ENOSPC;\n	},/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_v_vuln.cpg.json
+ ",	if (font.width > op->width || font.height > op->height)\n		rc = -ENOSPC;,	if (!(op->flags & KD_FONT_FLAG_OLD)) {\n		if (font.width > op->width || font.height > op->height)\n			rc = -ENOSPC;\n	} else {\n		if (font.width != 8)\n			rc = -EIO;\n		else if ((op->height && font.height > op->height) ||\n			 font.height > 32)\n			rc = -ENOSPC;\n	},PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_v_vuln.cpg.json
 pair_00074,CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_p,0,"static int
 record_func_key(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
 		int func_id, int insn_idx)
@@ -1180,7 +1180,7 @@ record_func_key(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
 -	val = reg->var_off.value;
  	if (bpf_map_key_unseen(aux))
  		bpf_map_key_store(aux, val);
- 	else if (!bpf_map_key_poisoned(aux) &&","	u64 val, max;\n	val = reg->var_off.value;\n	max = map->max_entries;\n	if (!(register_is_const(reg) && val < max)) {","	struct tnum range;\n	u64 val;\n	range = tnum_range(0, map->max_entries - 1);\n	if (!register_is_const(reg) || !tnum_in(range, reg->var_off)) {\n\n	val = reg->var_off.value;",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_p_patch.cpg.json
+ 	else if (!bpf_map_key_poisoned(aux) &&","	u64 val, max;\n	val = reg->var_off.value;\n	max = map->max_entries;\n	if (!(register_is_const(reg) && val < max)) {","	struct tnum range;\n	u64 val;\n	range = tnum_range(0, map->max_entries - 1);\n	if (!register_is_const(reg) || !tnum_in(range, reg->var_off)) {\n\n	val = reg->var_off.value;",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_p_patch.cpg.json
 pair_00285,CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_v,1,"static struct prog_entry *
 predicate_parse(const char *str, int nr_parens, int nr_preds,
 		parse_pred_fn parse_pred, void *data,
@@ -1374,7 +1374,7 @@ out_free:
 +			}
  			*(++top) = invert;
  			continue;
- 		case '!':					/* #3 */",			if (top - op_stack > nr_parens) {\n				ret = -EINVAL;\n				goto out_free;\n			},			if (top - op_stack > nr_parens)\n				return ERR_PTR(-EINVAL);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-401 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_v_vuln.cpg.json
+ 		case '!':					/* #3 */",			if (top - op_stack > nr_parens) {\n				ret = -EINVAL;\n				goto out_free;\n			},			if (top - op_stack > nr_parens)\n				return ERR_PTR(-EINVAL);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-401 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_v_vuln.cpg.json
 pair_00159,CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_v,1,"static int nr_recvmsg(struct kiocb *iocb, struct socket *sock,
 		      struct msghdr *msg, size_t size, int flags)
 {
@@ -1437,7 +1437,7 @@ pair_00159,CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_v,1,"static i
 +		memset(sax, 0, sizeof(sax));
  		sax->sax25_family = AF_NETROM;
  		skb_copy_from_linear_data_offset(skb, 7, sax->sax25_call.ax25_call,
- 			      AX25_ADDR_LEN);","		memset(sax, 0, sizeof(sax));",,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-200 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_v_vuln.cpg.json
+ 			      AX25_ADDR_LEN);","		memset(sax, 0, sizeof(sax));",,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-200 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_v_vuln.cpg.json
 pair_00461,CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_v,1,"void btf_dump__free(struct btf_dump *d)
 {
 	int i;
@@ -1472,7 +1472,7 @@ pair_00461,CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_v,1,"void bt
 +	btf_dump_free_names(d->ident_names);
  
  	free(d);
- }",	btf_dump_free_names(d->type_names);\n	btf_dump_free_names(d->ident_names);,	hashmap__free(d->type_names);\n	hashmap__free(d->ident_names);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_v_vuln.cpg.json
+ }",	btf_dump_free_names(d->type_names);\n	btf_dump_free_names(d->ident_names);,	hashmap__free(d->type_names);\n	hashmap__free(d->ident_names);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_v_vuln.cpg.json
 pair_00074,CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_v,1,"static int
 record_func_key(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
 		int func_id, int insn_idx)
@@ -1544,7 +1544,7 @@ record_func_key(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
 -	val = reg->var_off.value;
  	if (bpf_map_key_unseen(aux))
  		bpf_map_key_store(aux, val);
- 	else if (!bpf_map_key_poisoned(aux) &&","	u64 val, max;\n	val = reg->var_off.value;\n	max = map->max_entries;\n	if (!(register_is_const(reg) && val < max)) {","	struct tnum range;\n	u64 val;\n	range = tnum_range(0, map->max_entries - 1);\n	if (!register_is_const(reg) || !tnum_in(range, reg->var_off)) {\n\n	val = reg->var_off.value;",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_v_vuln.cpg.json
+ 	else if (!bpf_map_key_poisoned(aux) &&","	u64 val, max;\n	val = reg->var_off.value;\n	max = map->max_entries;\n	if (!(register_is_const(reg) && val < max)) {","	struct tnum range;\n	u64 val;\n	range = tnum_range(0, map->max_entries - 1);\n	if (!register_is_const(reg) || !tnum_in(range, reg->var_off)) {\n\n	val = reg->var_off.value;",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2022_2905_3510_Linux_Kernel_CWE_125_Testset_d911b95c_v_vuln.cpg.json
 pair_00193,CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_p,0,"static int msr_open(struct inode *inode, struct file *file)
 {
 	unsigned int cpu;
@@ -1573,7 +1573,7 @@ pair_00193,CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_p,0,"static i
 +		return -EPERM;
  
  	cpu = iminor(file->f_path.dentry->d_inode);
- 	if (cpu >= nr_cpu_ids || !cpu_online(cpu))",\n	if (!capable(CAP_SYS_RAWIO))\n		return -EPERM;,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-264 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_p_patch.cpg.json
+ 	if (cpu >= nr_cpu_ids || !cpu_online(cpu))",\n	if (!capable(CAP_SYS_RAWIO))\n		return -EPERM;,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-264 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_p_patch.cpg.json
 pair_00228,CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_v,1,"int vt_ioctl(struct tty_struct *tty,
 	     unsigned int cmd, unsigned long arg)
 {
@@ -2297,7 +2297,7 @@ out:
 +			}
  			console_unlock();
  		}
- 		break;","			struct vc_data *vcp;\n\n			vcp = vc_cons[i].d;\n			if (vcp) {\n				if (v.v_vlin)\n					vcp->vc_scan_lines = v.v_vlin;\n				if (v.v_clin)\n					vcp->vc_font.height = v.v_clin;\n				vcp->vc_resize_user = 1;\n				vc_resize(vcp, v.v_cols, v.v_rows);\n			}","			if (v.v_vlin)\n				vc_cons[i].d->vc_scan_lines = v.v_vlin;\n			if (v.v_clin)\n				vc_cons[i].d->vc_font.height = v.v_clin;\n			vc_cons[i].d->vc_resize_user = 1;\n			vc_resize(vc_cons[i].d, v.v_cols, v.v_rows);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_v_vuln.cpg.json
+ 		break;","			struct vc_data *vcp;\n\n			vcp = vc_cons[i].d;\n			if (vcp) {\n				if (v.v_vlin)\n					vcp->vc_scan_lines = v.v_vlin;\n				if (v.v_clin)\n					vcp->vc_font.height = v.v_clin;\n				vcp->vc_resize_user = 1;\n				vc_resize(vcp, v.v_cols, v.v_rows);\n			}","			if (v.v_vlin)\n				vc_cons[i].d->vc_scan_lines = v.v_vlin;\n			if (v.v_clin)\n				vc_cons[i].d->vc_font.height = v.v_clin;\n			vc_cons[i].d->vc_resize_user = 1;\n			vc_resize(vc_cons[i].d, v.v_cols, v.v_rows);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2020_36558_2767_Linux_Kernel_CWE_362_Testset_fe01b5b7_v_vuln.cpg.json
 pair_00282,CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_p,0,"struct clock_source *dcn10_clock_source_create(
 	struct dc_context *ctx,
 	struct dc_bios *bios,
@@ -2329,7 +2329,7 @@ pair_00282,CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_p,0,"struct
 +	kfree(clk_src);
  	BREAK_TO_DEBUGGER();
  	return NULL;
- }",	kfree(clk_src);,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-401 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_p_patch.cpg.json
+ }",	kfree(clk_src);,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-401 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_p_patch.cpg.json
 pair_00278,CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_v,1,"int rtl_usb_probe(struct usb_interface *intf,
 		  const struct usb_device_id *id,
 		  struct rtl_hal_cfg *rtl_hal_cfg)
@@ -2433,7 +2433,7 @@ error_out2:
  	complete(&rtlpriv->firmware_loading_complete);
 +	kfree(rtlpriv->usb_data);
  	return -ENODEV;
- }",	if (!rtlpriv->usb_data) {\n		ieee80211_free_hw(hw);\n	}\n	kfree(rtlpriv->usb_data);,	if (!rtlpriv->usb_data),/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-401 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_v_vuln.cpg.json
+ }",	if (!rtlpriv->usb_data) {\n		ieee80211_free_hw(hw);\n	}\n	kfree(rtlpriv->usb_data);,	if (!rtlpriv->usb_data),PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-401 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_v_vuln.cpg.json
 pair_00551,CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_p,0,"static void can_can_gw_rcv(struct sk_buff *skb, void *data)
 {
 	struct cgw_job *gwj = (struct cgw_job *)data;
@@ -2594,7 +2594,7 @@ pair_00551,CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_p,0,"static 
 +	gwj->deleted_frames++;
 +	kfree_skb(nskb);
 +	return;
- }","	/* Has the CAN frame been modified? */\n		/* get available space for the processed CAN frame type */\n		int max_len = nskb->len - offsetof(struct can_frame, data);\n\n		/* dlc may have changed, make sure it fits to the CAN frame */\n		if (cf->can_dlc > max_len)\n			goto out_delete;\n\n		/* check for checksum updates in classic CAN length only */\n		if (gwj->mod.csumfunc.crc8) {\n			if (cf->can_dlc > 8)\n				goto out_delete;\n\n		}\n		if (gwj->mod.csumfunc.xor) {\n			if (cf->can_dlc > 8)\n				goto out_delete;\n\n		}\n\n	return;\n\n out_delete:\n	/* delete frame due to misconfiguration */\n	gwj->deleted_frames++;\n	kfree_skb(nskb);\n	return;",	/* check for checksum updates when the CAN frame has been modified */\n		if (gwj->mod.csumfunc.crc8)\n		if (gwj->mod.csumfunc.xor),/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_p_patch.cpg.json
+ }","	/* Has the CAN frame been modified? */\n		/* get available space for the processed CAN frame type */\n		int max_len = nskb->len - offsetof(struct can_frame, data);\n\n		/* dlc may have changed, make sure it fits to the CAN frame */\n		if (cf->can_dlc > max_len)\n			goto out_delete;\n\n		/* check for checksum updates in classic CAN length only */\n		if (gwj->mod.csumfunc.crc8) {\n			if (cf->can_dlc > 8)\n				goto out_delete;\n\n		}\n		if (gwj->mod.csumfunc.xor) {\n			if (cf->can_dlc > 8)\n				goto out_delete;\n\n		}\n\n	return;\n\n out_delete:\n	/* delete frame due to misconfiguration */\n	gwj->deleted_frames++;\n	kfree_skb(nskb);\n	return;",	/* check for checksum updates when the CAN frame has been modified */\n		if (gwj->mod.csumfunc.crc8)\n		if (gwj->mod.csumfunc.xor),PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_p_patch.cpg.json
 pair_00210,CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_p,0,"static int unix_stream_read_generic(struct unix_stream_read_state *state,
 				    bool freezable)
 {
@@ -2802,7 +2802,7 @@ out:
 +				unix_peek_fds(&scm, skb);
  
  			sk_peek_offset_fwd(sk, chunk);
- ","				unix_peek_fds(&scm, skb);",				scm.fp = scm_fp_dup(UNIXCB(skb).fp);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_p_patch.cpg.json
+ ","				unix_peek_fds(&scm, skb);",				scm.fp = scm_fp_dup(UNIXCB(skb).fp);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_p_patch.cpg.json
 pair_00057,CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_v,1,"static int l2cap_parse_conf_req(struct l2cap_chan *chan, void *data, size_t data_size)
 {
 	struct l2cap_conf_rsp *rsp = data;
@@ -3034,7 +3034,7 @@ done:
 +			break;
  
  		hint  = type & L2CAP_CONF_HINT;
- 		type &= L2CAP_CONF_MASK;",		if (len < 0)\n			break;,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_v_vuln.cpg.json
+ 		type &= L2CAP_CONF_MASK;",		if (len < 0)\n			break;,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_v_vuln.cpg.json
 pair_00093,CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_v,1,"static bool generic_new(struct nf_conn *ct, const struct sk_buff *skb,
 			unsigned int dataoff, unsigned int *timeouts)
 {
@@ -3047,7 +3047,7 @@ pair_00093,CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_v,1,"static bo
  {
 -	return true;
 +	return nf_generic_should_process(nf_ct_protonum(ct));
- }",	return nf_generic_should_process(nf_ct_protonum(ct));,	return true;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_v_vuln.cpg.json
+ }",	return nf_generic_should_process(nf_ct_protonum(ct));,	return true;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_v_vuln.cpg.json
 pair_00245,CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_p,0,"static ssize_t driver_override_show(struct device *dev,
 				    struct device_attribute *attr, char *buf)
 {
@@ -3071,7 +3071,7 @@ pair_00245,CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_p,0,"static
 +	len = sprintf(buf, ""%s\n"", pdev->driver_override);
 +	device_unlock(dev);
 +	return len;
- }","	ssize_t len;\n	device_lock(dev);\n	len = sprintf(buf, ""%s\n"", pdev->driver_override);\n	device_unlock(dev);\n	return len;","	return sprintf(buf, ""%s\n"", pdev->driver_override);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_p_patch.cpg.json
+ }","	ssize_t len;\n	device_lock(dev);\n	len = sprintf(buf, ""%s\n"", pdev->driver_override);\n	device_unlock(dev);\n	return len;","	return sprintf(buf, ""%s\n"", pdev->driver_override);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_p_patch.cpg.json
 pair_00306,CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_p,0,"static struct xt_counters *alloc_counters(const struct xt_table *table)
 {
 	unsigned int countersize;
@@ -3100,7 +3100,7 @@ pair_00306,CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_p,0,"static
 +	const struct xt_table_info *private = xt_table_get_private_protected(table);
  
  	/* We need atomic snapshot of counters: rest doesn't change
- 	   (other than comefrom, which userspace doesn't care",	const struct xt_table_info *private = xt_table_get_private_protected(table);,	const struct xt_table_info *private = table->private;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_p_patch.cpg.json
+ 	   (other than comefrom, which userspace doesn't care",	const struct xt_table_info *private = xt_table_get_private_protected(table);,	const struct xt_table_info *private = table->private;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_p_patch.cpg.json
 pair_00551,CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_v,1,"static void can_can_gw_rcv(struct sk_buff *skb, void *data)
 {
 	struct cgw_job *gwj = (struct cgw_job *)data;
@@ -3237,7 +3237,7 @@ pair_00551,CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_v,1,"static 
 +	gwj->deleted_frames++;
 +	kfree_skb(nskb);
 +	return;
- }","	/* Has the CAN frame been modified? */\n		/* get available space for the processed CAN frame type */\n		int max_len = nskb->len - offsetof(struct can_frame, data);\n\n		/* dlc may have changed, make sure it fits to the CAN frame */\n		if (cf->can_dlc > max_len)\n			goto out_delete;\n\n		/* check for checksum updates in classic CAN length only */\n		if (gwj->mod.csumfunc.crc8) {\n			if (cf->can_dlc > 8)\n				goto out_delete;\n\n		}\n		if (gwj->mod.csumfunc.xor) {\n			if (cf->can_dlc > 8)\n				goto out_delete;\n\n		}\n\n	return;\n\n out_delete:\n	/* delete frame due to misconfiguration */\n	gwj->deleted_frames++;\n	kfree_skb(nskb);\n	return;",	/* check for checksum updates when the CAN frame has been modified */\n		if (gwj->mod.csumfunc.crc8)\n		if (gwj->mod.csumfunc.xor),/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_v_vuln.cpg.json
+ }","	/* Has the CAN frame been modified? */\n		/* get available space for the processed CAN frame type */\n		int max_len = nskb->len - offsetof(struct can_frame, data);\n\n		/* dlc may have changed, make sure it fits to the CAN frame */\n		if (cf->can_dlc > max_len)\n			goto out_delete;\n\n		/* check for checksum updates in classic CAN length only */\n		if (gwj->mod.csumfunc.crc8) {\n			if (cf->can_dlc > 8)\n				goto out_delete;\n\n		}\n		if (gwj->mod.csumfunc.xor) {\n			if (cf->can_dlc > 8)\n				goto out_delete;\n\n		}\n\n	return;\n\n out_delete:\n	/* delete frame due to misconfiguration */\n	gwj->deleted_frames++;\n	kfree_skb(nskb);\n	return;",	/* check for checksum updates when the CAN frame has been modified */\n		if (gwj->mod.csumfunc.crc8)\n		if (gwj->mod.csumfunc.xor),PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2019_3701_2310_Linux_Kernel_CWE_787_Testset_69c2f5cf_v_vuln.cpg.json
 pair_00544,CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_v,1,"static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
 {
 	struct l2cap_conn *conn = hcon->l2cap_data;
@@ -3337,7 +3337,7 @@ pair_00544,CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_v,1,"stat
 +					       l2cap_build_conf_req(chan, buf, sizeof(buf)),
  					       buf);
  				chan->num_conf_req++;
- 			}","					       l2cap_build_conf_req(chan, buf, sizeof(buf)),","					       l2cap_build_conf_req(chan, buf),",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_v_vuln.cpg.json
+ 			}","					       l2cap_build_conf_req(chan, buf, sizeof(buf)),","					       l2cap_build_conf_req(chan, buf),",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_v_vuln.cpg.json
 pair_00497,CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_p,0,"void intel_guc_ads_reset(struct intel_guc *guc)
 {
 	if (!guc->ads_vma)
@@ -3356,7 +3356,7 @@ pair_00497,CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_p,0,"void i
  	__guc_ads_init(guc);
 +
 +	guc_ads_private_data_reset(guc);
- }",\n\n	guc_ads_private_data_reset(guc);,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-476 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_p_patch.cpg.json
+ }",\n\n	guc_ads_private_data_reset(guc);,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-476 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_p_patch.cpg.json
 pair_00146,CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_v,1,"__visible __notrace_funcgraph struct task_struct *
 __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 {
@@ -3610,7 +3610,7 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 +		/* This works (and fails) the same way as fsindex above. */
  		if (gsindex)
  			prev->gs = 0;
- 	}","	/* Reload esp0 and ss1. */\n	/* We must save %fs and %gs before load_TLS() because\n	 * %fs and %gs may be cleared by load_TLS().\n	 *\n	 * (e.g. xen_load_tls())\n	 */\n	savesegment(fs, fsindex);\n	savesegment(gs, gsindex);\n\n	 * Load TLS before restoring any segments so that segment loads\n	 * reference the correct GDT entries.\n	 */\n	load_TLS(next, cpu);\n\n	/*\n	 * Leave lazy mode, flushing any hypercalls made here.  This\n	 * must be done after loading TLS entries in the GDT but before\n	 * loading segments that might reference them, and and it must\n	 * be done before math_state_restore, so the TS bit is up to\n	 * date.\n	 */\n	arch_end_context_switch(next_p);\n\n	/* Switch DS and ES.\n	 *\n	 * Reading them only returns the selectors, but writing them (if\n	 * nonzero) loads the full descriptor from the GDT or LDT.  The\n	 * LDT for next is loaded in switch_mm, and the GDT is loaded\n	 * above.\n	 *\n	 * We therefore need to write new values to the segment\n	 * registers on every context switch unless both the new and old\n	 * values are zero.\n	 *\n	 * Note that we don't need to do anything for CS and SS, as\n	 * those are saved and restored as part of pt_regs.\n	 * These are even more complicated than FS and GS: they have\n	 * 64-bit bases are that controlled by arch_prctl.  Those bases\n	 * only differ from the values in the GDT or LDT if the selector\n	 * is 0.\n	 *\n	 * Loading the segment register resets the hidden base part of\n	 * the register to 0 or the value from the GDT / LDT.  If the\n	 * next base address zero, writing 0 to the segment register is\n	 * much faster than using wrmsr to explicitly zero the base.\n	 *\n	 * The thread_struct.fs and thread_struct.gs values are 0\n	 * if the fs and gs bases respectively are not overridden\n	 * from the values implied by fsindex and gsindex.  They\n	 * are nonzero, and store the nonzero base addresses, if\n	 * the bases are overridden.\n	 *\n	 * (fs != 0 && fsindex != 0) || (gs != 0 && gsindex != 0) should\n	 * be impossible.\n	 *\n	 * Therefore we need to reload the segment registers if either\n	 * the old or new selector is nonzero, and we need to override\n	 * the base address if next thread expects it to be overridden.\n	 *\n	 * This code is unnecessarily slow in the case where the old and\n	 * new indexes are zero and the new base is nonzero -- it will\n	 * unnecessarily write 0 to the selector before writing the new\n	 * base address.\n	 *\n	 * Note: This all depends on arch_prctl being the only way that\n	 * user code can override the segment base.  Once wrfsbase and\n	 * wrgsbase are enabled, most of this code will need to change.\n\n		 * If user code wrote a nonzero value to FS, then it also\n		 * cleared the overridden base address.\n		 *\n		 * XXX: if user code wrote 0 to FS and cleared the base\n		 * address itself, we won't notice and we'll incorrectly\n		 * restore the prior base address next time we reschdule\n		 * the process.\n\n		/* This works (and fails) the same way as fsindex above. */","	/*\n	 * Reload esp0, LDT and the page table pointer:\n	 */\n	 * Switch DS and ES.\n	 * This won't pick up thread selector changes, but I guess that is ok.\n\n	/* We must save %fs and %gs before load_TLS() because\n	 * %fs and %gs may be cleared by load_TLS().\n	 *\n	 * (e.g. xen_load_tls())\n	 */\n	savesegment(fs, fsindex);\n	savesegment(gs, gsindex);\n\n	load_TLS(next, cpu);\n\n	/*\n	 * Leave lazy mode, flushing any hypercalls made here.\n	 * This must be done before restoring TLS segments so\n	 * the GDT and LDT are properly updated, and must be\n	 * done before math_state_restore, so the TS bit is up\n	 * to date.\n	 */\n	arch_end_context_switch(next_p);\n\n	 * Segment register != 0 always requires a reload.  Also\n	 * reload when it has changed.  When prev process used 64bit\n	 * base always reload to avoid an information leak.\n		 * Check if the user used a selector != 0; if yes\n		 *  clear 64bit base, since overloaded base is always\n		 *  mapped to the Null selector\n	/* when next process has a 64bit base use it */",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-200 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_v_vuln.cpg.json
+ 	}","	/* Reload esp0 and ss1. */\n	/* We must save %fs and %gs before load_TLS() because\n	 * %fs and %gs may be cleared by load_TLS().\n	 *\n	 * (e.g. xen_load_tls())\n	 */\n	savesegment(fs, fsindex);\n	savesegment(gs, gsindex);\n\n	 * Load TLS before restoring any segments so that segment loads\n	 * reference the correct GDT entries.\n	 */\n	load_TLS(next, cpu);\n\n	/*\n	 * Leave lazy mode, flushing any hypercalls made here.  This\n	 * must be done after loading TLS entries in the GDT but before\n	 * loading segments that might reference them, and and it must\n	 * be done before math_state_restore, so the TS bit is up to\n	 * date.\n	 */\n	arch_end_context_switch(next_p);\n\n	/* Switch DS and ES.\n	 *\n	 * Reading them only returns the selectors, but writing them (if\n	 * nonzero) loads the full descriptor from the GDT or LDT.  The\n	 * LDT for next is loaded in switch_mm, and the GDT is loaded\n	 * above.\n	 *\n	 * We therefore need to write new values to the segment\n	 * registers on every context switch unless both the new and old\n	 * values are zero.\n	 *\n	 * Note that we don't need to do anything for CS and SS, as\n	 * those are saved and restored as part of pt_regs.\n	 * These are even more complicated than FS and GS: they have\n	 * 64-bit bases are that controlled by arch_prctl.  Those bases\n	 * only differ from the values in the GDT or LDT if the selector\n	 * is 0.\n	 *\n	 * Loading the segment register resets the hidden base part of\n	 * the register to 0 or the value from the GDT / LDT.  If the\n	 * next base address zero, writing 0 to the segment register is\n	 * much faster than using wrmsr to explicitly zero the base.\n	 *\n	 * The thread_struct.fs and thread_struct.gs values are 0\n	 * if the fs and gs bases respectively are not overridden\n	 * from the values implied by fsindex and gsindex.  They\n	 * are nonzero, and store the nonzero base addresses, if\n	 * the bases are overridden.\n	 *\n	 * (fs != 0 && fsindex != 0) || (gs != 0 && gsindex != 0) should\n	 * be impossible.\n	 *\n	 * Therefore we need to reload the segment registers if either\n	 * the old or new selector is nonzero, and we need to override\n	 * the base address if next thread expects it to be overridden.\n	 *\n	 * This code is unnecessarily slow in the case where the old and\n	 * new indexes are zero and the new base is nonzero -- it will\n	 * unnecessarily write 0 to the selector before writing the new\n	 * base address.\n	 *\n	 * Note: This all depends on arch_prctl being the only way that\n	 * user code can override the segment base.  Once wrfsbase and\n	 * wrgsbase are enabled, most of this code will need to change.\n\n		 * If user code wrote a nonzero value to FS, then it also\n		 * cleared the overridden base address.\n		 *\n		 * XXX: if user code wrote 0 to FS and cleared the base\n		 * address itself, we won't notice and we'll incorrectly\n		 * restore the prior base address next time we reschdule\n		 * the process.\n\n		/* This works (and fails) the same way as fsindex above. */","	/*\n	 * Reload esp0, LDT and the page table pointer:\n	 */\n	 * Switch DS and ES.\n	 * This won't pick up thread selector changes, but I guess that is ok.\n\n	/* We must save %fs and %gs before load_TLS() because\n	 * %fs and %gs may be cleared by load_TLS().\n	 *\n	 * (e.g. xen_load_tls())\n	 */\n	savesegment(fs, fsindex);\n	savesegment(gs, gsindex);\n\n	load_TLS(next, cpu);\n\n	/*\n	 * Leave lazy mode, flushing any hypercalls made here.\n	 * This must be done before restoring TLS segments so\n	 * the GDT and LDT are properly updated, and must be\n	 * done before math_state_restore, so the TS bit is up\n	 * to date.\n	 */\n	arch_end_context_switch(next_p);\n\n	 * Segment register != 0 always requires a reload.  Also\n	 * reload when it has changed.  When prev process used 64bit\n	 * base always reload to avoid an information leak.\n		 * Check if the user used a selector != 0; if yes\n		 *  clear 64bit base, since overloaded base is always\n		 *  mapped to the Null selector\n	/* when next process has a 64bit base use it */",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-200 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_v_vuln.cpg.json
 pair_00282,CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_v,1,"struct clock_source *dcn10_clock_source_create(
 	struct dc_context *ctx,
 	struct dc_bios *bios,
@@ -3641,7 +3641,7 @@ pair_00282,CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_v,1,"struct
 +	kfree(clk_src);
  	BREAK_TO_DEBUGGER();
  	return NULL;
- }",	kfree(clk_src);,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-401 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_v_vuln.cpg.json
+ }",	kfree(clk_src);,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-401 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2019_19083_2175_Linux_Kernel_CWE_401_Testset_ee3a2de1_v_vuln.cpg.json
 pair_00034,CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_p,0,"static __u8 *nci_extract_rf_params_nfcf_passive_poll(struct nci_dev *ndev,
 			struct rf_tech_specific_params_nfcf_poll *nfcf_poll,
 						     __u8 *data)
@@ -3666,7 +3666,7 @@ pair_00034,CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_p,0,"static __
 +	nfcf_poll->sensf_res_len = min_t(__u8, *data++, NFC_SENSF_RES_MAXSIZE);
  
  	pr_debug(""bit_rate %d, sensf_res_len %d\n"",
- 		 nfcf_poll->bit_rate, nfcf_poll->sensf_res_len);","	nfcf_poll->sensf_res_len = min_t(__u8, *data++, NFC_SENSF_RES_MAXSIZE);",	nfcf_poll->sensf_res_len = *data++;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-119 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_p_patch.cpg.json
+ 		 nfcf_poll->bit_rate, nfcf_poll->sensf_res_len);","	nfcf_poll->sensf_res_len = min_t(__u8, *data++, NFC_SENSF_RES_MAXSIZE);",	nfcf_poll->sensf_res_len = *data++;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-119 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_p_patch.cpg.json
 pair_00175,CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_v,1,"static int route_doit(struct sk_buff *skb, struct nlmsghdr *nlh)
 {
 	struct net *net = sock_net(skb->sk);
@@ -3722,7 +3722,7 @@ pair_00175,CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_v,1,"static i
 +	if (!netlink_capable(skb, CAP_SYS_ADMIN))
  		return -EPERM;
  
- 	ASSERT_RTNL();","	if (!netlink_capable(skb, CAP_NET_ADMIN))\n	if (!netlink_capable(skb, CAP_SYS_ADMIN))",	if (!capable(CAP_NET_ADMIN))\n	if (!capable(CAP_SYS_ADMIN)),/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-264 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_v_vuln.cpg.json
+ 	ASSERT_RTNL();","	if (!netlink_capable(skb, CAP_NET_ADMIN))\n	if (!netlink_capable(skb, CAP_SYS_ADMIN))",	if (!capable(CAP_NET_ADMIN))\n	if (!capable(CAP_SYS_ADMIN)),PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-264 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_v_vuln.cpg.json
 pair_00562,CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_p,0,"static int con_font_get(struct vc_data *vc, struct console_font_op *op)
 {
 	struct console_font font;
@@ -3787,7 +3787,7 @@ out:
 +		rc = -ENOSPC;
  	if (rc)
  		goto out;
- ",	if (font.width > op->width || font.height > op->height)\n		rc = -ENOSPC;,	if (!(op->flags & KD_FONT_FLAG_OLD)) {\n		if (font.width > op->width || font.height > op->height)\n			rc = -ENOSPC;\n	} else {\n		if (font.width != 8)\n			rc = -EIO;\n		else if ((op->height && font.height > op->height) ||\n			 font.height > 32)\n			rc = -ENOSPC;\n	},/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_p_patch.cpg.json
+ ",	if (font.width > op->width || font.height > op->height)\n		rc = -ENOSPC;,	if (!(op->flags & KD_FONT_FLAG_OLD)) {\n		if (font.width > op->width || font.height > op->height)\n			rc = -ENOSPC;\n	} else {\n		if (font.width != 8)\n			rc = -EIO;\n		else if ((op->height && font.height > op->height) ||\n			 font.height > 32)\n			rc = -ENOSPC;\n	},PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2021_33656_2983_Linux_Kernel_CWE_787_Testset_a13d59af_p_patch.cpg.json
 pair_00554,CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_v,1,"static int size_entry_mwt(struct ebt_entry *entry, const unsigned char *base,
 			  unsigned int *total,
 			  struct ebt_entries_buf_state *state)
@@ -3888,7 +3888,7 @@ pair_00554,CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_v,1,"static 
 +
  	for (i = 0, j = 1 ; j < 4 ; j++, i++) {
  		struct compat_ebt_entry_mwt *match32;
- 		unsigned int size;",	for (i = 0; i < 4 ; ++i) {\n		if (offsets[i] >= *total)\n			return -EINVAL;\n		if (i == 0)\n			continue;\n		if (offsets[i-1] > offsets[i])\n			return -EINVAL;\n	}\n,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_v_vuln.cpg.json
+ 		unsigned int size;",	for (i = 0; i < 4 ; ++i) {\n		if (offsets[i] >= *total)\n			return -EINVAL;\n		if (i == 0)\n			continue;\n		if (offsets[i-1] > offsets[i])\n			return -EINVAL;\n	}\n,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_v_vuln.cpg.json
 pair_00040,CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_v,1,"static inline int check_entry_size_and_hooks(struct arpt_entry *e,
 					     struct xt_table_info *newinfo,
 					     const unsigned char *base,
@@ -3953,7 +3953,7 @@ pair_00040,CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_v,1,"static i
 +					 ""ACCEPT/DROP\n"");
  				return -EINVAL;
  			}
- 			newinfo->underflow[h] = underflows[h];","				pr_debug(""Underflows must be unconditional and ""\n					 ""use the STANDARD target with ""\n					 ""ACCEPT/DROP\n"");","				pr_err(""Underflows must be unconditional and ""\n				       ""use the STANDARD target with ""\n				       ""ACCEPT/DROP\n"");",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-119 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_v_vuln.cpg.json
+ 			newinfo->underflow[h] = underflows[h];","				pr_debug(""Underflows must be unconditional and ""\n					 ""use the STANDARD target with ""\n					 ""ACCEPT/DROP\n"");","				pr_err(""Underflows must be unconditional and ""\n				       ""use the STANDARD target with ""\n				       ""ACCEPT/DROP\n"");",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-119 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_v_vuln.cpg.json
 pair_00321,CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_p,0,"static int route4_change(struct net *net, struct sk_buff *in_skb,
 			 struct tcf_proto *tp, unsigned long base, u32 handle,
 			 struct nlattr **tca, void **arg, bool ovr,
@@ -4060,7 +4060,7 @@ errout:
 +					rcu_assign_pointer(*fp, fold->next);
  					break;
  				}
- 			}","				if (pfp == fold) {\n					rcu_assign_pointer(*fp, fold->next);",				if (pfp == f) {\n					*fp = f->next;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_p_patch.cpg.json
+ 			}","				if (pfp == fold) {\n					rcu_assign_pointer(*fp, fold->next);",				if (pfp == f) {\n					*fp = f->next;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_p_patch.cpg.json
 pair_00105,CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_v,1,"static void hid_close_report(struct hid_device *device)
 {
 	unsigned i, j;
@@ -4098,7 +4098,7 @@ pair_00105,CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_v,1,"static vo
 +		for (j = 0; j < HID_MAX_IDS; j++) {
  			struct hid_report *report = report_enum->report_id_hash[j];
  			if (report)
- 				hid_free_report(report);",		for (j = 0; j < HID_MAX_IDS; j++) {,		for (j = 0; j < 256; j++) {,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_v_vuln.cpg.json
+ 				hid_free_report(report);",		for (j = 0; j < HID_MAX_IDS; j++) {,		for (j = 0; j < 256; j++) {,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_v_vuln.cpg.json
 pair_00305,CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_p,0,"static struct xt_counters *alloc_counters(const struct xt_table *table)
 {
 	unsigned int countersize;
@@ -4128,7 +4128,7 @@ pair_00305,CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_p,0,"static
 +	const struct xt_table_info *private = xt_table_get_private_protected(table);
  
  	/* We need atomic snapshot of counters: rest doesn't change
- 	 * (other than comefrom, which userspace doesn't care",	const struct xt_table_info *private = xt_table_get_private_protected(table);,	const struct xt_table_info *private = table->private;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_p_patch.cpg.json
+ 	 * (other than comefrom, which userspace doesn't care",	const struct xt_table_info *private = xt_table_get_private_protected(table);,	const struct xt_table_info *private = table->private;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_p_patch.cpg.json
 pair_00245,CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_v,1,"static ssize_t driver_override_show(struct device *dev,
 				    struct device_attribute *attr, char *buf)
 {
@@ -4148,7 +4148,7 @@ pair_00245,CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_v,1,"static
 +	len = sprintf(buf, ""%s\n"", pdev->driver_override);
 +	device_unlock(dev);
 +	return len;
- }","	ssize_t len;\n	device_lock(dev);\n	len = sprintf(buf, ""%s\n"", pdev->driver_override);\n	device_unlock(dev);\n	return len;","	return sprintf(buf, ""%s\n"", pdev->driver_override);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_v_vuln.cpg.json
+ }","	ssize_t len;\n	device_lock(dev);\n	len = sprintf(buf, ""%s\n"", pdev->driver_override);\n	device_unlock(dev);\n	return len;","	return sprintf(buf, ""%s\n"", pdev->driver_override);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2017_12146_1255_Linux_Kernel_CWE_362_Testset_c156efe9_v_vuln.cpg.json
 pair_00079,CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_p,0,"static int valid_master_desc(const char *new_desc, const char *orig_desc)
 {
 	int prefix_len;
@@ -4204,7 +4204,7 @@ pair_00079,CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_p,0,"static
  	return 0;
 -out:
 -	return -EINVAL;
- }","	int prefix_len;\n\n	if (!strncmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN))\n		prefix_len = KEY_TRUSTED_PREFIX_LEN;\n	else if (!strncmp(new_desc, KEY_USER_PREFIX, KEY_USER_PREFIX_LEN))\n		prefix_len = KEY_USER_PREFIX_LEN;\n	else\n		return -EINVAL;\n\n	if (!new_desc[prefix_len])\n		return -EINVAL;\n\n	if (orig_desc && strncmp(new_desc, orig_desc, prefix_len))\n		return -EINVAL;\n","	if (!memcmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN)) {\n		if (strlen(new_desc) == KEY_TRUSTED_PREFIX_LEN)\n			goto out;\n		if (orig_desc)\n			if (memcmp(new_desc, orig_desc, KEY_TRUSTED_PREFIX_LEN))\n				goto out;\n	} else if (!memcmp(new_desc, KEY_USER_PREFIX, KEY_USER_PREFIX_LEN)) {\n		if (strlen(new_desc) == KEY_USER_PREFIX_LEN)\n			goto out;\n		if (orig_desc)\n			if (memcmp(new_desc, orig_desc, KEY_USER_PREFIX_LEN))\n				goto out;\n	} else\n		goto out;\nout:\n	return -EINVAL;",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_p_patch.cpg.json
+ }","	int prefix_len;\n\n	if (!strncmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN))\n		prefix_len = KEY_TRUSTED_PREFIX_LEN;\n	else if (!strncmp(new_desc, KEY_USER_PREFIX, KEY_USER_PREFIX_LEN))\n		prefix_len = KEY_USER_PREFIX_LEN;\n	else\n		return -EINVAL;\n\n	if (!new_desc[prefix_len])\n		return -EINVAL;\n\n	if (orig_desc && strncmp(new_desc, orig_desc, prefix_len))\n		return -EINVAL;\n","	if (!memcmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN)) {\n		if (strlen(new_desc) == KEY_TRUSTED_PREFIX_LEN)\n			goto out;\n		if (orig_desc)\n			if (memcmp(new_desc, orig_desc, KEY_TRUSTED_PREFIX_LEN))\n				goto out;\n	} else if (!memcmp(new_desc, KEY_USER_PREFIX, KEY_USER_PREFIX_LEN)) {\n		if (strlen(new_desc) == KEY_USER_PREFIX_LEN)\n			goto out;\n		if (orig_desc)\n			if (memcmp(new_desc, orig_desc, KEY_USER_PREFIX_LEN))\n				goto out;\n	} else\n		goto out;\nout:\n	return -EINVAL;",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_p_patch.cpg.json
 pair_00146,CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_p,0,"__visible __notrace_funcgraph struct task_struct *
 __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 {
@@ -4503,7 +4503,7 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
 +		/* This works (and fails) the same way as fsindex above. */
  		if (gsindex)
  			prev->gs = 0;
- 	}","	/* Reload esp0 and ss1. */\n	/* We must save %fs and %gs before load_TLS() because\n	 * %fs and %gs may be cleared by load_TLS().\n	 *\n	 * (e.g. xen_load_tls())\n	 */\n	savesegment(fs, fsindex);\n	savesegment(gs, gsindex);\n\n	 * Load TLS before restoring any segments so that segment loads\n	 * reference the correct GDT entries.\n	 */\n	load_TLS(next, cpu);\n\n	/*\n	 * Leave lazy mode, flushing any hypercalls made here.  This\n	 * must be done after loading TLS entries in the GDT but before\n	 * loading segments that might reference them, and and it must\n	 * be done before math_state_restore, so the TS bit is up to\n	 * date.\n	 */\n	arch_end_context_switch(next_p);\n\n	/* Switch DS and ES.\n	 *\n	 * Reading them only returns the selectors, but writing them (if\n	 * nonzero) loads the full descriptor from the GDT or LDT.  The\n	 * LDT for next is loaded in switch_mm, and the GDT is loaded\n	 * above.\n	 *\n	 * We therefore need to write new values to the segment\n	 * registers on every context switch unless both the new and old\n	 * values are zero.\n	 *\n	 * Note that we don't need to do anything for CS and SS, as\n	 * those are saved and restored as part of pt_regs.\n	 * These are even more complicated than FS and GS: they have\n	 * 64-bit bases are that controlled by arch_prctl.  Those bases\n	 * only differ from the values in the GDT or LDT if the selector\n	 * is 0.\n	 *\n	 * Loading the segment register resets the hidden base part of\n	 * the register to 0 or the value from the GDT / LDT.  If the\n	 * next base address zero, writing 0 to the segment register is\n	 * much faster than using wrmsr to explicitly zero the base.\n	 *\n	 * The thread_struct.fs and thread_struct.gs values are 0\n	 * if the fs and gs bases respectively are not overridden\n	 * from the values implied by fsindex and gsindex.  They\n	 * are nonzero, and store the nonzero base addresses, if\n	 * the bases are overridden.\n	 *\n	 * (fs != 0 && fsindex != 0) || (gs != 0 && gsindex != 0) should\n	 * be impossible.\n	 *\n	 * Therefore we need to reload the segment registers if either\n	 * the old or new selector is nonzero, and we need to override\n	 * the base address if next thread expects it to be overridden.\n	 *\n	 * This code is unnecessarily slow in the case where the old and\n	 * new indexes are zero and the new base is nonzero -- it will\n	 * unnecessarily write 0 to the selector before writing the new\n	 * base address.\n	 *\n	 * Note: This all depends on arch_prctl being the only way that\n	 * user code can override the segment base.  Once wrfsbase and\n	 * wrgsbase are enabled, most of this code will need to change.\n\n		 * If user code wrote a nonzero value to FS, then it also\n		 * cleared the overridden base address.\n		 *\n		 * XXX: if user code wrote 0 to FS and cleared the base\n		 * address itself, we won't notice and we'll incorrectly\n		 * restore the prior base address next time we reschdule\n		 * the process.\n\n		/* This works (and fails) the same way as fsindex above. */","	/*\n	 * Reload esp0, LDT and the page table pointer:\n	 */\n	 * Switch DS and ES.\n	 * This won't pick up thread selector changes, but I guess that is ok.\n\n	/* We must save %fs and %gs before load_TLS() because\n	 * %fs and %gs may be cleared by load_TLS().\n	 *\n	 * (e.g. xen_load_tls())\n	 */\n	savesegment(fs, fsindex);\n	savesegment(gs, gsindex);\n\n	load_TLS(next, cpu);\n\n	/*\n	 * Leave lazy mode, flushing any hypercalls made here.\n	 * This must be done before restoring TLS segments so\n	 * the GDT and LDT are properly updated, and must be\n	 * done before math_state_restore, so the TS bit is up\n	 * to date.\n	 */\n	arch_end_context_switch(next_p);\n\n	 * Segment register != 0 always requires a reload.  Also\n	 * reload when it has changed.  When prev process used 64bit\n	 * base always reload to avoid an information leak.\n		 * Check if the user used a selector != 0; if yes\n		 *  clear 64bit base, since overloaded base is always\n		 *  mapped to the Null selector\n	/* when next process has a 64bit base use it */",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-200 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_p_patch.cpg.json
+ 	}","	/* Reload esp0 and ss1. */\n	/* We must save %fs and %gs before load_TLS() because\n	 * %fs and %gs may be cleared by load_TLS().\n	 *\n	 * (e.g. xen_load_tls())\n	 */\n	savesegment(fs, fsindex);\n	savesegment(gs, gsindex);\n\n	 * Load TLS before restoring any segments so that segment loads\n	 * reference the correct GDT entries.\n	 */\n	load_TLS(next, cpu);\n\n	/*\n	 * Leave lazy mode, flushing any hypercalls made here.  This\n	 * must be done after loading TLS entries in the GDT but before\n	 * loading segments that might reference them, and and it must\n	 * be done before math_state_restore, so the TS bit is up to\n	 * date.\n	 */\n	arch_end_context_switch(next_p);\n\n	/* Switch DS and ES.\n	 *\n	 * Reading them only returns the selectors, but writing them (if\n	 * nonzero) loads the full descriptor from the GDT or LDT.  The\n	 * LDT for next is loaded in switch_mm, and the GDT is loaded\n	 * above.\n	 *\n	 * We therefore need to write new values to the segment\n	 * registers on every context switch unless both the new and old\n	 * values are zero.\n	 *\n	 * Note that we don't need to do anything for CS and SS, as\n	 * those are saved and restored as part of pt_regs.\n	 * These are even more complicated than FS and GS: they have\n	 * 64-bit bases are that controlled by arch_prctl.  Those bases\n	 * only differ from the values in the GDT or LDT if the selector\n	 * is 0.\n	 *\n	 * Loading the segment register resets the hidden base part of\n	 * the register to 0 or the value from the GDT / LDT.  If the\n	 * next base address zero, writing 0 to the segment register is\n	 * much faster than using wrmsr to explicitly zero the base.\n	 *\n	 * The thread_struct.fs and thread_struct.gs values are 0\n	 * if the fs and gs bases respectively are not overridden\n	 * from the values implied by fsindex and gsindex.  They\n	 * are nonzero, and store the nonzero base addresses, if\n	 * the bases are overridden.\n	 *\n	 * (fs != 0 && fsindex != 0) || (gs != 0 && gsindex != 0) should\n	 * be impossible.\n	 *\n	 * Therefore we need to reload the segment registers if either\n	 * the old or new selector is nonzero, and we need to override\n	 * the base address if next thread expects it to be overridden.\n	 *\n	 * This code is unnecessarily slow in the case where the old and\n	 * new indexes are zero and the new base is nonzero -- it will\n	 * unnecessarily write 0 to the selector before writing the new\n	 * base address.\n	 *\n	 * Note: This all depends on arch_prctl being the only way that\n	 * user code can override the segment base.  Once wrfsbase and\n	 * wrgsbase are enabled, most of this code will need to change.\n\n		 * If user code wrote a nonzero value to FS, then it also\n		 * cleared the overridden base address.\n		 *\n		 * XXX: if user code wrote 0 to FS and cleared the base\n		 * address itself, we won't notice and we'll incorrectly\n		 * restore the prior base address next time we reschdule\n		 * the process.\n\n		/* This works (and fails) the same way as fsindex above. */","	/*\n	 * Reload esp0, LDT and the page table pointer:\n	 */\n	 * Switch DS and ES.\n	 * This won't pick up thread selector changes, but I guess that is ok.\n\n	/* We must save %fs and %gs before load_TLS() because\n	 * %fs and %gs may be cleared by load_TLS().\n	 *\n	 * (e.g. xen_load_tls())\n	 */\n	savesegment(fs, fsindex);\n	savesegment(gs, gsindex);\n\n	load_TLS(next, cpu);\n\n	/*\n	 * Leave lazy mode, flushing any hypercalls made here.\n	 * This must be done before restoring TLS segments so\n	 * the GDT and LDT are properly updated, and must be\n	 * done before math_state_restore, so the TS bit is up\n	 * to date.\n	 */\n	arch_end_context_switch(next_p);\n\n	 * Segment register != 0 always requires a reload.  Also\n	 * reload when it has changed.  When prev process used 64bit\n	 * base always reload to avoid an information leak.\n		 * Check if the user used a selector != 0; if yes\n		 *  clear 64bit base, since overloaded base is always\n		 *  mapped to the Null selector\n	/* when next process has a 64bit base use it */",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-200 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2014_9419_680_Linux_Kernel_CWE_200_Testset_3d01246f_p_patch.cpg.json
 pair_00321,CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_v,1,"static int route4_change(struct net *net, struct sk_buff *in_skb,
 			 struct tcf_proto *tp, unsigned long base, u32 handle,
 			 struct nlattr **tca, void **arg, bool ovr,
@@ -4610,7 +4610,7 @@ errout:
 +					rcu_assign_pointer(*fp, fold->next);
  					break;
  				}
- 			}","				if (pfp == fold) {\n					rcu_assign_pointer(*fp, fold->next);",				if (pfp == f) {\n					*fp = f->next;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_v_vuln.cpg.json
+ 			}","				if (pfp == fold) {\n					rcu_assign_pointer(*fp, fold->next);",				if (pfp == f) {\n					*fp = f->next;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2021_3715_3042_Linux_Kernel_CWE_416_Testset_b3560084_v_vuln.cpg.json
 pair_00079,CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_v,1,"static int valid_master_desc(const char *new_desc, const char *orig_desc)
 {
 	if (!memcmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN)) {
@@ -4667,7 +4667,7 @@ out:
  	return 0;
 -out:
 -	return -EINVAL;
- }","	int prefix_len;\n\n	if (!strncmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN))\n		prefix_len = KEY_TRUSTED_PREFIX_LEN;\n	else if (!strncmp(new_desc, KEY_USER_PREFIX, KEY_USER_PREFIX_LEN))\n		prefix_len = KEY_USER_PREFIX_LEN;\n	else\n		return -EINVAL;\n\n	if (!new_desc[prefix_len])\n		return -EINVAL;\n\n	if (orig_desc && strncmp(new_desc, orig_desc, prefix_len))\n		return -EINVAL;\n","	if (!memcmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN)) {\n		if (strlen(new_desc) == KEY_TRUSTED_PREFIX_LEN)\n			goto out;\n		if (orig_desc)\n			if (memcmp(new_desc, orig_desc, KEY_TRUSTED_PREFIX_LEN))\n				goto out;\n	} else if (!memcmp(new_desc, KEY_USER_PREFIX, KEY_USER_PREFIX_LEN)) {\n		if (strlen(new_desc) == KEY_USER_PREFIX_LEN)\n			goto out;\n		if (orig_desc)\n			if (memcmp(new_desc, orig_desc, KEY_USER_PREFIX_LEN))\n				goto out;\n	} else\n		goto out;\nout:\n	return -EINVAL;",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_v_vuln.cpg.json
+ }","	int prefix_len;\n\n	if (!strncmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN))\n		prefix_len = KEY_TRUSTED_PREFIX_LEN;\n	else if (!strncmp(new_desc, KEY_USER_PREFIX, KEY_USER_PREFIX_LEN))\n		prefix_len = KEY_USER_PREFIX_LEN;\n	else\n		return -EINVAL;\n\n	if (!new_desc[prefix_len])\n		return -EINVAL;\n\n	if (orig_desc && strncmp(new_desc, orig_desc, prefix_len))\n		return -EINVAL;\n","	if (!memcmp(new_desc, KEY_TRUSTED_PREFIX, KEY_TRUSTED_PREFIX_LEN)) {\n		if (strlen(new_desc) == KEY_TRUSTED_PREFIX_LEN)\n			goto out;\n		if (orig_desc)\n			if (memcmp(new_desc, orig_desc, KEY_TRUSTED_PREFIX_LEN))\n				goto out;\n	} else if (!memcmp(new_desc, KEY_USER_PREFIX, KEY_USER_PREFIX_LEN)) {\n		if (strlen(new_desc) == KEY_USER_PREFIX_LEN)\n			goto out;\n		if (orig_desc)\n			if (memcmp(new_desc, orig_desc, KEY_USER_PREFIX_LEN))\n				goto out;\n	} else\n		goto out;\nout:\n	return -EINVAL;",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2017_13305_1276_Linux_Kernel_CWE_125_Testset_b062c0f9_v_vuln.cpg.json
 pair_00230,CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_v,1,"static int ptrace_attach(struct task_struct *task, long request,
 			 unsigned long addr,
 			 unsigned long flags)
@@ -4778,7 +4778,7 @@ out:
 +		signal_wake_up_state(task, __TASK_STOPPED);
  
  	spin_unlock(&task->sighand->siglock);
- ","		signal_wake_up_state(task, __TASK_STOPPED);","		signal_wake_up(task, 1);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_v_vuln.cpg.json
+ ","		signal_wake_up_state(task, __TASK_STOPPED);","		signal_wake_up(task, 1);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_v_vuln.cpg.json
 pair_00102,CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_v,1,"int ip6_mroute_getsockopt(struct sock *sk, int optname, char __user *optval,
 			  int __user *optlen)
 {
@@ -4831,7 +4831,7 @@ pair_00102,CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_v,1,"int ip6
 +		return -EOPNOTSUPP;
  
  	mrt = ip6mr_get_table(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
- 	if (!mrt)",\n	if (sk->sk_type != SOCK_RAW ||\n	    inet_sk(sk)->inet_num != IPPROTO_ICMPV6)\n		return -EOPNOTSUPP;,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_v_vuln.cpg.json
+ 	if (!mrt)",\n	if (sk->sk_type != SOCK_RAW ||\n	    inet_sk(sk)->inet_num != IPPROTO_ICMPV6)\n		return -EOPNOTSUPP;,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_v_vuln.cpg.json
 pair_00229,CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_v,1,"static ssize_t usbip_sockfd_store(struct device *dev, struct device_attribute *attr,
 			    const char *buf, size_t count)
 {
@@ -4961,7 +4961,7 @@ err:
 +		wake_up_process(sdev->ud.tcp_tx);
  
  	} else {
- 		dev_info(dev, ""stub down\n"");","	struct task_struct *tcp_rx = NULL;\n	struct task_struct *tcp_tx = NULL;\n		/* unlock and create threads and get tasks */\n		spin_unlock_irq(&sdev->ud.lock);\n		tcp_rx = kthread_create(stub_rx_loop, &sdev->ud, ""stub_rx"");\n		if (IS_ERR(tcp_rx)) {\n			sockfd_put(socket);\n			return -EINVAL;\n		}\n		tcp_tx = kthread_create(stub_tx_loop, &sdev->ud, ""stub_tx"");\n		if (IS_ERR(tcp_tx)) {\n			kthread_stop(tcp_rx);\n			sockfd_put(socket);\n			return -EINVAL;\n		}\n\n		/* get task structs now */\n		get_task_struct(tcp_rx);\n		get_task_struct(tcp_tx);\n\n		/* lock and update sdev->ud state */\n		spin_lock_irq(&sdev->ud.lock);\n		sdev->ud.tcp_rx = tcp_rx;\n		sdev->ud.tcp_tx = tcp_tx;\n		sdev->ud.status = SDEV_ST_USED;\n		wake_up_process(sdev->ud.tcp_rx);\n		wake_up_process(sdev->ud.tcp_tx);","\n		sdev->ud.tcp_rx = kthread_get_run(stub_rx_loop, &sdev->ud,\n						  ""stub_rx"");\n		sdev->ud.tcp_tx = kthread_get_run(stub_tx_loop, &sdev->ud,\n						  ""stub_tx"");\n\n		spin_lock_irq(&sdev->ud.lock);\n		sdev->ud.status = SDEV_ST_USED;\n		spin_unlock_irq(&sdev->ud.lock);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_v_vuln.cpg.json
+ 		dev_info(dev, ""stub down\n"");","	struct task_struct *tcp_rx = NULL;\n	struct task_struct *tcp_tx = NULL;\n		/* unlock and create threads and get tasks */\n		spin_unlock_irq(&sdev->ud.lock);\n		tcp_rx = kthread_create(stub_rx_loop, &sdev->ud, ""stub_rx"");\n		if (IS_ERR(tcp_rx)) {\n			sockfd_put(socket);\n			return -EINVAL;\n		}\n		tcp_tx = kthread_create(stub_tx_loop, &sdev->ud, ""stub_tx"");\n		if (IS_ERR(tcp_tx)) {\n			kthread_stop(tcp_rx);\n			sockfd_put(socket);\n			return -EINVAL;\n		}\n\n		/* get task structs now */\n		get_task_struct(tcp_rx);\n		get_task_struct(tcp_tx);\n\n		/* lock and update sdev->ud state */\n		spin_lock_irq(&sdev->ud.lock);\n		sdev->ud.tcp_rx = tcp_rx;\n		sdev->ud.tcp_tx = tcp_tx;\n		sdev->ud.status = SDEV_ST_USED;\n		wake_up_process(sdev->ud.tcp_rx);\n		wake_up_process(sdev->ud.tcp_tx);","\n		sdev->ud.tcp_rx = kthread_get_run(stub_rx_loop, &sdev->ud,\n						  ""stub_rx"");\n		sdev->ud.tcp_tx = kthread_get_run(stub_tx_loop, &sdev->ud,\n						  ""stub_tx"");\n\n		spin_lock_irq(&sdev->ud.lock);\n		sdev->ud.status = SDEV_ST_USED;\n		spin_unlock_irq(&sdev->ud.lock);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_v_vuln.cpg.json
 pair_00051,CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_p,0,"int indx_read(struct ntfs_index *indx, struct ntfs_inode *ni, CLST vbn,
 	      struct indx_node **node)
 {
@@ -5067,7 +5067,7 @@ out:
 +
  	if (err == -E_NTFS_FIXUP) {
  		ntfs_write_bh(ni->mi.sbi, &ib->rhdr, &in->nb, 0);
- 		err = 0;","	if (!index_buf_check(ib, bytes, &vbn)) {\n		ntfs_inode_err(&ni->vfs_inode, ""directory corrupted"");\n		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);\n		err = -EINVAL;\n		goto out;\n	}\n",,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_p_patch.cpg.json
+ 		err = 0;","	if (!index_buf_check(ib, bytes, &vbn)) {\n		ntfs_inode_err(&ni->vfs_inode, ""directory corrupted"");\n		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);\n		err = -EINVAL;\n		goto out;\n	}\n",,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2022_48502_3793_Linux_Kernel_CWE_125_Testset_f613ab20_p_patch.cpg.json
 pair_00210,CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_v,1,"static int unix_stream_read_generic(struct unix_stream_read_state *state,
 				    bool freezable)
 {
@@ -5275,7 +5275,7 @@ out:
 +				unix_peek_fds(&scm, skb);
  
  			sk_peek_offset_fwd(sk, chunk);
- ","				unix_peek_fds(&scm, skb);",				scm.fp = scm_fp_dup(UNIXCB(skb).fp);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_v_vuln.cpg.json
+ ","				unix_peek_fds(&scm, skb);",				scm.fp = scm_fp_dup(UNIXCB(skb).fp);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2021_0920_2830_Linux_Kernel_CWE_362_Testset_91972ca1_v_vuln.cpg.json
 pair_00497,CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_v,1,"void intel_guc_ads_reset(struct intel_guc *guc)
 {
 	if (!guc->ads_vma)
@@ -5291,7 +5291,7 @@ pair_00497,CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_v,1,"void i
  	__guc_ads_init(guc);
 +
 +	guc_ads_private_data_reset(guc);
- }",\n\n	guc_ads_private_data_reset(guc);,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-476 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_v_vuln.cpg.json
+ }",\n\n	guc_ads_private_data_reset(guc);,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-476 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2020_12364_2468_Linux_Kernel_CWE_476_Testset_787b7839_v_vuln.cpg.json
 pair_00093,CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_p,0,"static bool generic_new(struct nf_conn *ct, const struct sk_buff *skb,
 			unsigned int dataoff, unsigned int *timeouts)
 {
@@ -5304,7 +5304,7 @@ pair_00093,CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_p,0,"static bo
  {
 -	return true;
 +	return nf_generic_should_process(nf_ct_protonum(ct));
- }",	return nf_generic_should_process(nf_ct_protonum(ct));,	return true;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_p_patch.cpg.json
+ }",	return nf_generic_should_process(nf_ct_protonum(ct));,	return true;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2014_8160_607_Linux_Kernel_CWE_20_Testset_acd6bed2_p_patch.cpg.json
 pair_00548,CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_v,1,"static int perf_read_group(struct perf_event *event,
 				   u64 read_format, char __user *buf)
 {
@@ -5367,7 +5367,7 @@ We recommend upgrading past commit 32671e3799ca2e4590773fd0e63aaa4229e50c06.
 -	 */
  	mutex_lock(&leader->child_mutex);
  
- 	ret = __perf_read_group_add(leader, read_format, values);",,	/*\n	 * By locking the child_mutex of the leader we effectively\n	 * lock the child list of all siblings.. XXX explain how.\n	 */,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_v_vuln.cpg.json
+ 	ret = __perf_read_group_add(leader, read_format, values);",,	/*\n	 * By locking the child_mutex of the leader we effectively\n	 * lock the child list of all siblings.. XXX explain how.\n	 */,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_v_vuln.cpg.json
 pair_00057,CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_p,0,"static int l2cap_parse_conf_req(struct l2cap_chan *chan, void *data, size_t data_size)
 {
 	struct l2cap_conf_rsp *rsp = data;
@@ -5601,7 +5601,7 @@ done:
 +			break;
  
  		hint  = type & L2CAP_CONF_HINT;
- 		type &= L2CAP_CONF_MASK;",		if (len < 0)\n			break;,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_p_patch.cpg.json
+ 		type &= L2CAP_CONF_MASK;",		if (len < 0)\n			break;,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2019_3459_2307_Linux_Kernel_CWE_125_Testset_e1fae0ee_p_patch.cpg.json
 pair_00567,CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_v,1,"static int do_cpuid_func(struct kvm_cpuid_entry2 *entry, u32 func,
 			 int *nent, int maxnent, unsigned int type)
 {
@@ -5620,7 +5620,7 @@ pair_00567,CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_v,1,"static
 +
  	if (type == KVM_GET_EMULATED_CPUID)
  		return __do_cpuid_func_emulated(entry, func, nent, maxnent);
- ",	if (*nent >= maxnent)\n		return -E2BIG;\n,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_v_vuln.cpg.json
+ ",	if (*nent >= maxnent)\n		return -E2BIG;\n,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_v_vuln.cpg.json
 pair_00142,CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_v,1,"static int rawv6_recvmsg(struct kiocb *iocb, struct sock *sk,
 		  struct msghdr *msg, size_t len,
 		  int noblock, int flags, int *addr_len)
@@ -5718,7 +5718,7 @@ csum_copy_err:
 +		*addr_len = sizeof(*sin6);
  	}
  
- 	sock_recv_ts_and_drops(msg, sk, skb);",		*addr_len = sizeof(*sin6);,\n	if (addr_len)\n		*addr_len=sizeof(*sin6);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-200 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_v_vuln.cpg.json
+ 	sock_recv_ts_and_drops(msg, sk, skb);",		*addr_len = sizeof(*sin6);,\n	if (addr_len)\n		*addr_len=sizeof(*sin6);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-200 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_v_vuln.cpg.json
 pair_00342,CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_v,1,"static void sixpack_close(struct tty_struct *tty)
 {
 	struct sixpack *sp;
@@ -5767,7 +5767,7 @@ pair_00342,CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_v,1,"static 
 -	unregister_netdev(sp->dev);
  
  	/* Free all 6pack frame buffers after unreg. */
- 	kfree(sp->rbuff);",	unregister_netdev(sp->dev);\n,\n	unregister_netdev(sp->dev);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_v_vuln.cpg.json
+ 	kfree(sp->rbuff);",	unregister_netdev(sp->dev);\n,\n	unregister_netdev(sp->dev);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2022_1198_3253_Linux_Kernel_CWE_416_Testset_3434f955_v_vuln.cpg.json
 pair_00008,CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_v,1,"unsigned long move_page_tables(struct vm_area_struct *vma,
 		unsigned long old_addr, struct vm_area_struct *new_vma,
 		unsigned long new_addr, unsigned long len,
@@ -5854,7 +5854,7 @@ pair_00008,CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_v,1,"unsign
 +		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd) || pmd_devmap(*old_pmd)) {
  			if (extent == HPAGE_PMD_SIZE) {
  				bool moved;
- 				/* See comment in move_ptes() */",		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd) || pmd_devmap(*old_pmd)) {,		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd)) {,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-119 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_v_vuln.cpg.json
+ 				/* See comment in move_ptes() */",		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd) || pmd_devmap(*old_pmd)) {,		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd)) {,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-119 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_v_vuln.cpg.json
 pair_00306,CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_v,1,"static struct xt_counters *alloc_counters(const struct xt_table *table)
 {
 	unsigned int countersize;
@@ -5883,7 +5883,7 @@ pair_00306,CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_v,1,"static
 +	const struct xt_table_info *private = xt_table_get_private_protected(table);
  
  	/* We need atomic snapshot of counters: rest doesn't change
- 	   (other than comefrom, which userspace doesn't care",	const struct xt_table_info *private = xt_table_get_private_protected(table);,	const struct xt_table_info *private = table->private;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_v_vuln.cpg.json
+ 	   (other than comefrom, which userspace doesn't care",	const struct xt_table_info *private = xt_table_get_private_protected(table);,	const struct xt_table_info *private = table->private;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2020_36694_2777_Linux_Kernel_CWE_416_Testset_767300c8_v_vuln.cpg.json
 pair_00016,CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_v,1,"static unsigned int xdr_set_page_base(struct xdr_stream *xdr,
 				      unsigned int base, unsigned int len)
 {
@@ -5933,7 +5933,7 @@ pair_00016,CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_v,1,"static
 +	else
  		maxlen -= base;
  	if (len > maxlen)
- 		len = maxlen;",	if (base >= maxlen)\n		return 0;\n	else,	if (base >= maxlen) {\n		base = maxlen;\n		maxlen = 0;\n	} else,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-119 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_v_vuln.cpg.json
+ 		len = maxlen;",	if (base >= maxlen)\n		return 0;\n	else,	if (base >= maxlen) {\n		base = maxlen;\n		maxlen = 0;\n	} else,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-119 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_v_vuln.cpg.json
 pair_00105,CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_p,0,"static void hid_close_report(struct hid_device *device)
 {
 	unsigned i, j;
@@ -5971,7 +5971,7 @@ pair_00105,CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_p,0,"static vo
 +		for (j = 0; j < HID_MAX_IDS; j++) {
  			struct hid_report *report = report_enum->report_id_hash[j];
  			if (report)
- 				hid_free_report(report);",		for (j = 0; j < HID_MAX_IDS; j++) {,		for (j = 0; j < 256; j++) {,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_p_patch.cpg.json
+ 				hid_free_report(report);",		for (j = 0; j < HID_MAX_IDS; j++) {,		for (j = 0; j < 256; j++) {,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2013_2888_244_Linux_Kernel_CWE_20_Testset_62878275_p_patch.cpg.json
 pair_00451,CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_v,1,"static int binder_proc_transaction(struct binder_transaction *t,
 				    struct binder_proc *proc,
 				    struct binder_thread *thread)
@@ -6067,7 +6067,7 @@ pair_00451,CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_v,1,"static
 +		binder_release_entire_buffer(proc, NULL, buffer, false);
  		binder_alloc_free_buf(&proc->alloc, buffer);
  		kfree(t_outdated);
- 		binder_stats_deleted(BINDER_STAT_TRANSACTION);","		binder_release_entire_buffer(proc, NULL, buffer, false);","		binder_transaction_buffer_release(proc, NULL, buffer, 0, 0);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_v_vuln.cpg.json
+ 		binder_stats_deleted(BINDER_STAT_TRANSACTION);","		binder_release_entire_buffer(proc, NULL, buffer, false);","		binder_transaction_buffer_release(proc, NULL, buffer, 0, 0);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_v_vuln.cpg.json
 pair_00439,CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_p,0,"static void nft_lookup_activate(const struct nft_ctx *ctx,
 				const struct nft_expr *expr)
 {
@@ -6082,7 +6082,7 @@ pair_00439,CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_p,0,"static
  
 -	priv->set->use++;
 +	nf_tables_activate_set(ctx, priv->set);
- }","	nf_tables_activate_set(ctx, priv->set);",	priv->set->use++;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_p_patch.cpg.json
+ }","	nf_tables_activate_set(ctx, priv->set);",	priv->set->use++;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_p_patch.cpg.json
 pair_00568,CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_v,1,"static int mon_bin_mmap(struct file *filp, struct vm_area_struct *vma)
 {
 	/* don't do anything here: ""fault"" will set up page table entries */
@@ -6104,7 +6104,7 @@ pair_00568,CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_v,1,"static
 +	vma->vm_flags &= ~VM_MAYWRITE;
  	vma->vm_flags |= VM_DONTEXPAND | VM_DONTDUMP;
  	vma->vm_private_data = filp->private_data;
- 	mon_bin_vma_open(vma);",\n	if (vma->vm_flags & VM_WRITE)\n		return -EPERM;\n\n	vma->vm_flags &= ~VM_MAYWRITE;,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_v_vuln.cpg.json
+ 	mon_bin_vma_open(vma);",\n	if (vma->vm_flags & VM_WRITE)\n		return -EPERM;\n\n	vma->vm_flags &= ~VM_MAYWRITE;,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_v_vuln.cpg.json
 pair_00111,CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_p,0,"static int lme2510_identify_state(struct dvb_usb_device *d, const char **name)
 {
 	struct lme2510_state *st = d->priv;
@@ -6153,7 +6153,7 @@ pair_00111,CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_p,0,"static 
 +		return -EINVAL;
 +
 +	return WARM;
- }",	int status;\n	status = lme2510_return_status(d);\n	if (status == 0x44) {\n	if (status != 0x47)\n		return -EINVAL;\n\n	return WARM;,	if (lme2510_return_status(d) == 0x44) {\n	return 0;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_p_patch.cpg.json
+ }",	int status;\n	status = lme2510_return_status(d);\n	if (status == 0x44) {\n	if (status != 0x47)\n		return -EINVAL;\n\n	return WARM;,	if (lme2510_return_status(d) == 0x44) {\n	return 0;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2017_16538_1325_Linux_Kernel_CWE_20_Testset_90fe41ee_p_patch.cpg.json
 pair_00451,CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_p,0,"static int binder_proc_transaction(struct binder_transaction *t,
 				    struct binder_proc *proc,
 				    struct binder_thread *thread)
@@ -6249,7 +6249,7 @@ pair_00451,CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_p,0,"static
 +		binder_release_entire_buffer(proc, NULL, buffer, false);
  		binder_alloc_free_buf(&proc->alloc, buffer);
  		kfree(t_outdated);
- 		binder_stats_deleted(BINDER_STAT_TRANSACTION);","		binder_release_entire_buffer(proc, NULL, buffer, false);","		binder_transaction_buffer_release(proc, NULL, buffer, 0, 0);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_p_patch.cpg.json
+ 		binder_stats_deleted(BINDER_STAT_TRANSACTION);","		binder_release_entire_buffer(proc, NULL, buffer, false);","		binder_transaction_buffer_release(proc, NULL, buffer, 0, 0);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2023_21255_3917_Linux_Kernel_CWE_416_Testset_e8e70f10_p_patch.cpg.json
 pair_00230,CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_p,0,"static int ptrace_attach(struct task_struct *task, long request,
 			 unsigned long addr,
 			 unsigned long flags)
@@ -6360,7 +6360,7 @@ out:
 +		signal_wake_up_state(task, __TASK_STOPPED);
  
  	spin_unlock(&task->sighand->siglock);
- ","		signal_wake_up_state(task, __TASK_STOPPED);","		signal_wake_up(task, 1);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_p_patch.cpg.json
+ ","		signal_wake_up_state(task, __TASK_STOPPED);","		signal_wake_up(task, 1);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2013_0871_164_Linux_Kernel_CWE_362_Testset_3cadf998_p_patch.cpg.json
 pair_00278,CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_p,0,"int rtl_usb_probe(struct usb_interface *intf,
 		  const struct usb_device_id *id,
 		  struct rtl_hal_cfg *rtl_hal_cfg)
@@ -6467,7 +6467,7 @@ error_out2:
  	complete(&rtlpriv->firmware_loading_complete);
 +	kfree(rtlpriv->usb_data);
  	return -ENODEV;
- }",	if (!rtlpriv->usb_data) {\n		ieee80211_free_hw(hw);\n	}\n	kfree(rtlpriv->usb_data);,	if (!rtlpriv->usb_data),/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-401 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_p_patch.cpg.json
+ }",	if (!rtlpriv->usb_data) {\n		ieee80211_free_hw(hw);\n	}\n	kfree(rtlpriv->usb_data);,	if (!rtlpriv->usb_data),PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-401 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2019_19063_2144_Linux_Kernel_CWE_401_Testset_5ed18888_p_patch.cpg.json
 pair_00305,CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_v,1,"static struct xt_counters *alloc_counters(const struct xt_table *table)
 {
 	unsigned int countersize;
@@ -6497,7 +6497,7 @@ pair_00305,CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_v,1,"static
 +	const struct xt_table_info *private = xt_table_get_private_protected(table);
  
  	/* We need atomic snapshot of counters: rest doesn't change
- 	 * (other than comefrom, which userspace doesn't care",	const struct xt_table_info *private = xt_table_get_private_protected(table);,	const struct xt_table_info *private = table->private;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_v_vuln.cpg.json
+ 	 * (other than comefrom, which userspace doesn't care",	const struct xt_table_info *private = xt_table_get_private_protected(table);,	const struct xt_table_info *private = table->private;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2020_36694_2770_Linux_Kernel_CWE_416_Testset_68500a7e_v_vuln.cpg.json
 pair_00159,CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_p,0,"static int nr_recvmsg(struct kiocb *iocb, struct socket *sock,
 		      struct msghdr *msg, size_t size, int flags)
 {
@@ -6561,7 +6561,7 @@ pair_00159,CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_p,0,"static i
 +		memset(sax, 0, sizeof(sax));
  		sax->sax25_family = AF_NETROM;
  		skb_copy_from_linear_data_offset(skb, 7, sax->sax25_call.ax25_call,
- 			      AX25_ADDR_LEN);","		memset(sax, 0, sizeof(sax));",,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-200 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_p_patch.cpg.json
+ 			      AX25_ADDR_LEN);","		memset(sax, 0, sizeof(sax));",,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-200 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2013_3232_272_Linux_Kernel_CWE_200_Testset_5ee4b8a3_p_patch.cpg.json
 pair_00008,CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_p,0,"unsigned long move_page_tables(struct vm_area_struct *vma,
 		unsigned long old_addr, struct vm_area_struct *new_vma,
 		unsigned long new_addr, unsigned long len,
@@ -6648,7 +6648,7 @@ pair_00008,CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_p,0,"unsign
 +		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd) || pmd_devmap(*old_pmd)) {
  			if (extent == HPAGE_PMD_SIZE) {
  				bool moved;
- 				/* See comment in move_ptes() */",		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd) || pmd_devmap(*old_pmd)) {,		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd)) {,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-119 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_p_patch.cpg.json
+ 				/* See comment in move_ptes() */",		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd) || pmd_devmap(*old_pmd)) {,		if (is_swap_pmd(*old_pmd) || pmd_trans_huge(*old_pmd)) {,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-119 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2020_10757_2414_Linux_Kernel_CWE_119_Testset_d7361e20_p_patch.cpg.json
 pair_00034,CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_v,1,"static __u8 *nci_extract_rf_params_nfcf_passive_poll(struct nci_dev *ndev,
 			struct rf_tech_specific_params_nfcf_poll *nfcf_poll,
 						     __u8 *data)
@@ -6673,7 +6673,7 @@ pair_00034,CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_v,1,"static __
 +	nfcf_poll->sensf_res_len = min_t(__u8, *data++, NFC_SENSF_RES_MAXSIZE);
  
  	pr_debug(""bit_rate %d, sensf_res_len %d\n"",
- 		 nfcf_poll->bit_rate, nfcf_poll->sensf_res_len);","	nfcf_poll->sensf_res_len = min_t(__u8, *data++, NFC_SENSF_RES_MAXSIZE);",	nfcf_poll->sensf_res_len = *data++;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-119 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_v_vuln.cpg.json
+ 		 nfcf_poll->bit_rate, nfcf_poll->sensf_res_len);","	nfcf_poll->sensf_res_len = min_t(__u8, *data++, NFC_SENSF_RES_MAXSIZE);",	nfcf_poll->sensf_res_len = *data++;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-119 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2012_3364_55_Linux_Kernel_CWE_119_Testset_e60878e3_v_vuln.cpg.json
 pair_00461,CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_p,0,"void btf_dump__free(struct btf_dump *d)
 {
 	int i;
@@ -6708,7 +6708,7 @@ pair_00461,CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_p,0,"void bt
 +	btf_dump_free_names(d->ident_names);
  
  	free(d);
- }",	btf_dump_free_names(d->type_names);\n	btf_dump_free_names(d->ident_names);,	hashmap__free(d->type_names);\n	hashmap__free(d->ident_names);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_p_patch.cpg.json
+ }",	btf_dump_free_names(d->type_names);\n	btf_dump_free_names(d->ident_names);,	hashmap__free(d->type_names);\n	hashmap__free(d->ident_names);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2022_3534_3629_Linux_Kernel_CWE_416_Testset_7cc7321b_p_patch.cpg.json
 pair_00554,CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_p,0,"static int size_entry_mwt(struct ebt_entry *entry, const unsigned char *base,
 			  unsigned int *total,
 			  struct ebt_entries_buf_state *state)
@@ -6818,7 +6818,7 @@ pair_00554,CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_p,0,"static 
 +
  	for (i = 0, j = 1 ; j < 4 ; j++, i++) {
  		struct compat_ebt_entry_mwt *match32;
- 		unsigned int size;",	for (i = 0; i < 4 ; ++i) {\n		if (offsets[i] >= *total)\n			return -EINVAL;\n		if (i == 0)\n			continue;\n		if (offsets[i-1] > offsets[i])\n			return -EINVAL;\n	}\n,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_p_patch.cpg.json
+ 		unsigned int size;",	for (i = 0; i < 4 ; ++i) {\n		if (offsets[i] >= *total)\n			return -EINVAL;\n		if (i == 0)\n			continue;\n		if (offsets[i-1] > offsets[i])\n			return -EINVAL;\n	}\n,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2018_1068_1594_Linux_Kernel_CWE_787_Testset_5fa47baf_p_patch.cpg.json
 pair_00040,CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_p,0,"static inline int check_entry_size_and_hooks(struct arpt_entry *e,
 					     struct xt_table_info *newinfo,
 					     const unsigned char *base,
@@ -6883,7 +6883,7 @@ pair_00040,CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_p,0,"static i
 +					 ""ACCEPT/DROP\n"");
  				return -EINVAL;
  			}
- 			newinfo->underflow[h] = underflows[h];","				pr_debug(""Underflows must be unconditional and ""\n					 ""use the STANDARD target with ""\n					 ""ACCEPT/DROP\n"");","				pr_err(""Underflows must be unconditional and ""\n				       ""use the STANDARD target with ""\n				       ""ACCEPT/DROP\n"");",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-119 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_p_patch.cpg.json
+ 			newinfo->underflow[h] = underflows[h];","				pr_debug(""Underflows must be unconditional and ""\n					 ""use the STANDARD target with ""\n					 ""ACCEPT/DROP\n"");","				pr_err(""Underflows must be unconditional and ""\n				       ""use the STANDARD target with ""\n				       ""ACCEPT/DROP\n"");",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-119 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2016_3134_962_Linux_Kernel_CWE_119_Testset_154eba68_p_patch.cpg.json
 pair_00405,CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_p,0,"static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
 				   struct vmw_sw_context *sw_context,
 				   uint32_t handle)
@@ -6954,7 +6954,7 @@ pair_00405,CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_p,0,"static
  
 +	vmw_resource_unreference(&res);
  	return 0;
- }","	ret = vmw_user_resource_lookup_handle\n		 user_context_converter, &res);\n	if (ret != 0) {\n		return ret;\n	ret = vmw_execbuf_res_val_add(sw_context, res, VMW_RES_DIRTY_SET,\n				      vmw_val_add_flag_none);\n	if (unlikely(ret != 0)) {\n		vmw_resource_unreference(&res);\n	}\n	vmw_resource_unreference(&res);","	res = vmw_user_resource_noref_lookup_handle\n		 user_context_converter);\n	if (IS_ERR(res)) {\n		return PTR_ERR(res);\n	ret = vmw_execbuf_res_noref_val_add(sw_context, res, VMW_RES_DIRTY_SET);\n	if (unlikely(ret != 0))",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_p_patch.cpg.json
+ }","	ret = vmw_user_resource_lookup_handle\n		 user_context_converter, &res);\n	if (ret != 0) {\n		return ret;\n	ret = vmw_execbuf_res_val_add(sw_context, res, VMW_RES_DIRTY_SET,\n				      vmw_val_add_flag_none);\n	if (unlikely(ret != 0)) {\n		vmw_resource_unreference(&res);\n	}\n	vmw_resource_unreference(&res);","	res = vmw_user_resource_noref_lookup_handle\n		 user_context_converter);\n	if (IS_ERR(res)) {\n		return PTR_ERR(res);\n	ret = vmw_execbuf_res_noref_val_add(sw_context, res, VMW_RES_DIRTY_SET);\n	if (unlikely(ret != 0))",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_p_patch.cpg.json
 pair_00117,CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_v,1,"static unsigned long ioapic_read_indirect(struct kvm_ioapic *ioapic,
 					  unsigned long addr,
 					  unsigned long length)
@@ -7004,7 +7004,7 @@ pair_00117,CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_v,1,"static un
 -			redir_content = ioapic->redirtbl[redir_index].bits;
  			result = (ioapic->ioregsel & 0x1) ?
  			    (redir_content >> 32) & 0xffffffff :
- 			    redir_content & 0xffffffff;",			if (redir_index < IOAPIC_NUM_PINS)\n				redir_content =\n					ioapic->redirtbl[redir_index].bits;\n			else\n				redir_content = ~0ULL;,			ASSERT(redir_index < IOAPIC_NUM_PINS);\n			redir_content = ioapic->redirtbl[redir_index].bits;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_v_vuln.cpg.json
+ 			    redir_content & 0xffffffff;",			if (redir_index < IOAPIC_NUM_PINS)\n				redir_content =\n					ioapic->redirtbl[redir_index].bits;\n			else\n				redir_content = ~0ULL;,			ASSERT(redir_index < IOAPIC_NUM_PINS);\n			redir_content = ioapic->redirtbl[redir_index].bits;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_v_vuln.cpg.json
 pair_00016,CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_p,0,"static unsigned int xdr_set_page_base(struct xdr_stream *xdr,
 				      unsigned int base, unsigned int len)
 {
@@ -7053,7 +7053,7 @@ pair_00016,CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_p,0,"static
 +	else
  		maxlen -= base;
  	if (len > maxlen)
- 		len = maxlen;",	if (base >= maxlen)\n		return 0;\n	else,	if (base >= maxlen) {\n		base = maxlen;\n		maxlen = 0;\n	} else,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-119 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_p_patch.cpg.json
+ 		len = maxlen;",	if (base >= maxlen)\n		return 0;\n	else,	if (base >= maxlen) {\n		base = maxlen;\n		maxlen = 0;\n	} else,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-119 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2021_38201_3075_Linux_Kernel_CWE_119_Testset_4a5e3929_p_patch.cpg.json
 pair_00560,CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_v,1,"static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
 		       struct packet_type *pt, struct net_device *orig_dev)
 {
@@ -7339,7 +7339,7 @@ drop_n_account:
 +		goto drop_n_restore;
  	}
  	if (po->tp_version <= TPACKET_V2) {
- 		if (macoff + snaplen > po->rx_ring.frame_size) {","	unsigned short macoff, hdrlen;\n	unsigned int netoff;\n	}\n	if (netoff > USHRT_MAX) {\n		atomic_inc(&po->tp_drops);\n		goto drop_n_restore;","	unsigned short macoff, netoff, hdrlen;",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_v_vuln.cpg.json
+ 		if (macoff + snaplen > po->rx_ring.frame_size) {","	unsigned short macoff, hdrlen;\n	unsigned int netoff;\n	}\n	if (netoff > USHRT_MAX) {\n		atomic_inc(&po->tp_drops);\n		goto drop_n_restore;","	unsigned short macoff, netoff, hdrlen;",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_v_vuln.cpg.json
 pair_00560,CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_p,0,"static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
 		       struct packet_type *pt, struct net_device *orig_dev)
 {
@@ -7630,7 +7630,7 @@ drop_n_account:
 +		goto drop_n_restore;
  	}
  	if (po->tp_version <= TPACKET_V2) {
- 		if (macoff + snaplen > po->rx_ring.frame_size) {","	unsigned short macoff, hdrlen;\n	unsigned int netoff;\n	}\n	if (netoff > USHRT_MAX) {\n		atomic_inc(&po->tp_drops);\n		goto drop_n_restore;","	unsigned short macoff, netoff, hdrlen;",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_p_patch.cpg.json
+ 		if (macoff + snaplen > po->rx_ring.frame_size) {","	unsigned short macoff, hdrlen;\n	unsigned int netoff;\n	}\n	if (netoff > USHRT_MAX) {\n		atomic_inc(&po->tp_drops);\n		goto drop_n_restore;","	unsigned short macoff, netoff, hdrlen;",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2020_14386_2524_Linux_Kernel_CWE_787_Testset_6d712e68_p_patch.cpg.json
 pair_00229,CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_p,0,"static ssize_t usbip_sockfd_store(struct device *dev, struct device_attribute *attr,
 			    const char *buf, size_t count)
 {
@@ -7778,7 +7778,7 @@ err:
 +		wake_up_process(sdev->ud.tcp_tx);
  
  	} else {
- 		dev_info(dev, ""stub down\n"");","	struct task_struct *tcp_rx = NULL;\n	struct task_struct *tcp_tx = NULL;\n		/* unlock and create threads and get tasks */\n		spin_unlock_irq(&sdev->ud.lock);\n		tcp_rx = kthread_create(stub_rx_loop, &sdev->ud, ""stub_rx"");\n		if (IS_ERR(tcp_rx)) {\n			sockfd_put(socket);\n			return -EINVAL;\n		}\n		tcp_tx = kthread_create(stub_tx_loop, &sdev->ud, ""stub_tx"");\n		if (IS_ERR(tcp_tx)) {\n			kthread_stop(tcp_rx);\n			sockfd_put(socket);\n			return -EINVAL;\n		}\n\n		/* get task structs now */\n		get_task_struct(tcp_rx);\n		get_task_struct(tcp_tx);\n\n		/* lock and update sdev->ud state */\n		spin_lock_irq(&sdev->ud.lock);\n		sdev->ud.tcp_rx = tcp_rx;\n		sdev->ud.tcp_tx = tcp_tx;\n		sdev->ud.status = SDEV_ST_USED;\n		wake_up_process(sdev->ud.tcp_rx);\n		wake_up_process(sdev->ud.tcp_tx);","\n		sdev->ud.tcp_rx = kthread_get_run(stub_rx_loop, &sdev->ud,\n						  ""stub_rx"");\n		sdev->ud.tcp_tx = kthread_get_run(stub_tx_loop, &sdev->ud,\n						  ""stub_tx"");\n\n		spin_lock_irq(&sdev->ud.lock);\n		sdev->ud.status = SDEV_ST_USED;\n		spin_unlock_irq(&sdev->ud.lock);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_p_patch.cpg.json
+ 		dev_info(dev, ""stub down\n"");","	struct task_struct *tcp_rx = NULL;\n	struct task_struct *tcp_tx = NULL;\n		/* unlock and create threads and get tasks */\n		spin_unlock_irq(&sdev->ud.lock);\n		tcp_rx = kthread_create(stub_rx_loop, &sdev->ud, ""stub_rx"");\n		if (IS_ERR(tcp_rx)) {\n			sockfd_put(socket);\n			return -EINVAL;\n		}\n		tcp_tx = kthread_create(stub_tx_loop, &sdev->ud, ""stub_tx"");\n		if (IS_ERR(tcp_tx)) {\n			kthread_stop(tcp_rx);\n			sockfd_put(socket);\n			return -EINVAL;\n		}\n\n		/* get task structs now */\n		get_task_struct(tcp_rx);\n		get_task_struct(tcp_tx);\n\n		/* lock and update sdev->ud state */\n		spin_lock_irq(&sdev->ud.lock);\n		sdev->ud.tcp_rx = tcp_rx;\n		sdev->ud.tcp_tx = tcp_tx;\n		sdev->ud.status = SDEV_ST_USED;\n		wake_up_process(sdev->ud.tcp_rx);\n		wake_up_process(sdev->ud.tcp_tx);","\n		sdev->ud.tcp_rx = kthread_get_run(stub_rx_loop, &sdev->ud,\n						  ""stub_rx"");\n		sdev->ud.tcp_tx = kthread_get_run(stub_tx_loop, &sdev->ud,\n						  ""stub_tx"");\n\n		spin_lock_irq(&sdev->ud.lock);\n		sdev->ud.status = SDEV_ST_USED;\n		spin_unlock_irq(&sdev->ud.lock);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2021_29265_2947_Linux_Kernel_CWE_362_Testset_2c2768ba_p_patch.cpg.json
 pair_00548,CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_p,0,"static int perf_read_group(struct perf_event *event,
 				   u64 read_format, char __user *buf)
 {
@@ -7837,7 +7837,7 @@ We recommend upgrading past commit 32671e3799ca2e4590773fd0e63aaa4229e50c06.
 -	 */
  	mutex_lock(&leader->child_mutex);
  
- 	ret = __perf_read_group_add(leader, read_format, values);",,	/*\n	 * By locking the child_mutex of the leader we effectively\n	 * lock the child list of all siblings.. XXX explain how.\n	 */,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_p_patch.cpg.json
+ 	ret = __perf_read_group_add(leader, read_format, values);",,	/*\n	 * By locking the child_mutex of the leader we effectively\n	 * lock the child list of all siblings.. XXX explain how.\n	 */,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2023_5717_4290_Linux_Kernel_CWE_787_Testset_a601f92d_p_patch.cpg.json
 pair_00574,CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_v,1,"static inline int ext4_valid_inum(struct super_block *sb, unsigned long ino)
 {
 	return ino == EXT4_ROOT_INO ||
@@ -7861,7 +7861,7 @@ pair_00574,CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_v,1,"static
 -		ino == EXT4_RESIZE_INO ||
  		(ino >= EXT4_FIRST_INO(sb) &&
  		 ino <= le32_to_cpu(EXT4_SB(sb)->s_es->s_inodes_count));
- }",,		ino == EXT4_USR_QUOTA_INO ||\n		ino == EXT4_GRP_QUOTA_INO ||\n		ino == EXT4_BOOT_LOADER_INO ||\n		ino == EXT4_JOURNAL_INO ||\n		ino == EXT4_RESIZE_INO ||,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_v_vuln.cpg.json
+ }",,		ino == EXT4_USR_QUOTA_INO ||\n		ino == EXT4_GRP_QUOTA_INO ||\n		ino == EXT4_BOOT_LOADER_INO ||\n		ino == EXT4_JOURNAL_INO ||\n		ino == EXT4_RESIZE_INO ||,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_v_vuln.cpg.json
 pair_00354,CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_p,0,"unsigned long insn_get_seg_base(struct pt_regs *regs, int seg_reg_idx)
 {
 	struct desc_struct desc;
@@ -7927,7 +7927,7 @@ pair_00354,CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_p,0,"unsign
  
 -	return get_desc_base(desc);
 +	return get_desc_base(&desc);
- }","	struct desc_struct desc;\n	if (!get_desc(&desc, sel))\n	return get_desc_base(&desc);",	struct desc_struct *desc;\n	desc = get_desc(sel);\n	if (!desc)\n	return get_desc_base(desc);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_p_patch.cpg.json
+ }","	struct desc_struct desc;\n	if (!get_desc(&desc, sel))\n	return get_desc_base(&desc);",	struct desc_struct *desc;\n	desc = get_desc(sel);\n	if (!desc)\n	return get_desc_base(desc);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2019_13233_1959_Linux_Kernel_CWE_416_Testset_92efcf8f_p_patch.cpg.json
 pair_00175,CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_p,0,"static int route_doit(struct sk_buff *skb, struct nlmsghdr *nlh)
 {
 	struct net *net = sock_net(skb->sk);
@@ -7983,7 +7983,7 @@ pair_00175,CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_p,0,"static i
 +	if (!netlink_capable(skb, CAP_SYS_ADMIN))
  		return -EPERM;
  
- 	ASSERT_RTNL();","	if (!netlink_capable(skb, CAP_NET_ADMIN))\n	if (!netlink_capable(skb, CAP_SYS_ADMIN))",	if (!capable(CAP_NET_ADMIN))\n	if (!capable(CAP_SYS_ADMIN)),/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-264 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_p_patch.cpg.json
+ 	ASSERT_RTNL();","	if (!netlink_capable(skb, CAP_NET_ADMIN))\n	if (!netlink_capable(skb, CAP_SYS_ADMIN))",	if (!capable(CAP_NET_ADMIN))\n	if (!capable(CAP_SYS_ADMIN)),PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-264 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2014_0181_453_Linux_Kernel_CWE_264_Testset_84a88d06_p_patch.cpg.json
 pair_00567,CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_p,0,"static int do_cpuid_func(struct kvm_cpuid_entry2 *entry, u32 func,
 			 int *nent, int maxnent, unsigned int type)
 {
@@ -8005,7 +8005,7 @@ pair_00567,CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_p,0,"static
 +
  	if (type == KVM_GET_EMULATED_CPUID)
  		return __do_cpuid_func_emulated(entry, func, nent, maxnent);
- ",	if (*nent >= maxnent)\n		return -E2BIG;\n,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_p_patch.cpg.json
+ ",	if (*nent >= maxnent)\n		return -E2BIG;\n,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2019_19332_2191_Linux_Kernel_CWE_787_Testset_024a1339_p_patch.cpg.json
 pair_00102,CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_p,0,"int ip6_mroute_getsockopt(struct sock *sk, int optname, char __user *optval,
 			  int __user *optlen)
 {
@@ -8062,7 +8062,7 @@ pair_00102,CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_p,0,"int ip6
 +		return -EOPNOTSUPP;
  
  	mrt = ip6mr_get_table(net, raw6_sk(sk)->ip6mr_table ? : RT6_TABLE_DFLT);
- 	if (!mrt)",\n	if (sk->sk_type != SOCK_RAW ||\n	    inet_sk(sk)->inet_num != IPPROTO_ICMPV6)\n		return -EOPNOTSUPP;,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_p_patch.cpg.json
+ 	if (!mrt)",\n	if (sk->sk_type != SOCK_RAW ||\n	    inet_sk(sk)->inet_num != IPPROTO_ICMPV6)\n		return -EOPNOTSUPP;,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2017_18509_1435_Linux_Kernel_CWE_20_Testset_fe0eec25_p_patch.cpg.json
 pair_00219,CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_v,1,"static ieee80211_tx_result
 ieee80211_tx_h_unicast_ps_buf(struct ieee80211_tx_data *tx)
 {
@@ -8146,7 +8146,7 @@ ieee80211_tx_h_unicast_ps_buf(struct ieee80211_tx_data *tx)
 +		spin_unlock(&sta->ps_lock);
  
  		if (!timer_pending(&local->sta_cleanup))
- 			mod_timer(&local->sta_cleanup,","\n		/* sync with ieee80211_sta_ps_deliver_wakeup */\n		spin_lock(&sta->ps_lock);\n		/*\n		 * STA woke up the meantime and all the frames on ps_tx_buf have\n		 * been queued to pending queue. No reordering can happen, go\n		 * ahead and Tx the packet.\n		 */\n		if (!test_sta_flag(sta, WLAN_STA_PS_STA) &&\n		    !test_sta_flag(sta, WLAN_STA_PS_DRIVER)) {\n			spin_unlock(&sta->ps_lock);\n			return TX_CONTINUE;\n		}\n\n		spin_unlock(&sta->ps_lock);",,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_v_vuln.cpg.json
+ 			mod_timer(&local->sta_cleanup,","\n		/* sync with ieee80211_sta_ps_deliver_wakeup */\n		spin_lock(&sta->ps_lock);\n		/*\n		 * STA woke up the meantime and all the frames on ps_tx_buf have\n		 * been queued to pending queue. No reordering can happen, go\n		 * ahead and Tx the packet.\n		 */\n		if (!test_sta_flag(sta, WLAN_STA_PS_STA) &&\n		    !test_sta_flag(sta, WLAN_STA_PS_DRIVER)) {\n			spin_unlock(&sta->ps_lock);\n			return TX_CONTINUE;\n		}\n\n		spin_unlock(&sta->ps_lock);",,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_v_vuln.cpg.json
 pair_00405,CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_v,1,"static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
 				   struct vmw_sw_context *sw_context,
 				   uint32_t handle)
@@ -8213,7 +8213,7 @@ pair_00405,CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_v,1,"static
  
 +	vmw_resource_unreference(&res);
  	return 0;
- }","	ret = vmw_user_resource_lookup_handle\n		 user_context_converter, &res);\n	if (ret != 0) {\n		return ret;\n	ret = vmw_execbuf_res_val_add(sw_context, res, VMW_RES_DIRTY_SET,\n				      vmw_val_add_flag_none);\n	if (unlikely(ret != 0)) {\n		vmw_resource_unreference(&res);\n	}\n	vmw_resource_unreference(&res);","	res = vmw_user_resource_noref_lookup_handle\n		 user_context_converter);\n	if (IS_ERR(res)) {\n		return PTR_ERR(res);\n	ret = vmw_execbuf_res_noref_val_add(sw_context, res, VMW_RES_DIRTY_SET);\n	if (unlikely(ret != 0))",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_v_vuln.cpg.json
+ }","	ret = vmw_user_resource_lookup_handle\n		 user_context_converter, &res);\n	if (ret != 0) {\n		return ret;\n	ret = vmw_execbuf_res_val_add(sw_context, res, VMW_RES_DIRTY_SET,\n				      vmw_val_add_flag_none);\n	if (unlikely(ret != 0)) {\n		vmw_resource_unreference(&res);\n	}\n	vmw_resource_unreference(&res);","	res = vmw_user_resource_noref_lookup_handle\n		 user_context_converter);\n	if (IS_ERR(res)) {\n		return PTR_ERR(res);\n	ret = vmw_execbuf_res_noref_val_add(sw_context, res, VMW_RES_DIRTY_SET);\n	if (unlikely(ret != 0))",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2022_38457_3681_Linux_Kernel_CWE_416_Testset_69140601_v_vuln.cpg.json
 pair_00529,CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_v,1,"static void ipv4_send_dest_unreach(struct sk_buff *skb)
 {
 	struct ip_options opt;
@@ -8258,7 +8258,7 @@ pair_00529,CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_v,1,"static
 +		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);
  		rcu_read_unlock();
  
- 		if (res)","	struct net_device *dev;\n		dev = skb->dev ? skb->dev : skb_rtable(skb)->dst.dev;\n		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);","		res = __ip_options_compile(dev_net(skb->dev), &opt, skb, NULL);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-476 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_v_vuln.cpg.json
+ 		if (res)","	struct net_device *dev;\n		dev = skb->dev ? skb->dev : skb_rtable(skb)->dst.dev;\n		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);","		res = __ip_options_compile(dev_net(skb->dev), &opt, skb, NULL);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-476 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_v_vuln.cpg.json
 pair_00078,CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_p,0,"static int fbcon_get_font(struct vc_data *vc, struct console_font *font)
 {
 	u8 *fontdata = vc->vc_font.data;
@@ -8361,7 +8361,7 @@ pair_00078,CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_p,0,"static
 +
  		for (i = 0; i < font->charcount; i++) {
  			memcpy(data, fontdata, j);
- 			memset(data + j, 0, 128 - j);",		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * (vc->vc_font.height * sizeof(u32)) > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_p_patch.cpg.json
+ 			memset(data + j, 0, 128 - j);",		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * (vc->vc_font.height * sizeof(u32)) > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_p_patch.cpg.json
 pair_00481,CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_v,1,"static int toneport_setup(struct usb_line6_toneport *toneport)
 {
 	u32 *ticks;
@@ -8403,7 +8403,7 @@ pair_00481,CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_v,1,"static
 +	schedule_delayed_work(&toneport->line6.startup_work,
  			      msecs_to_jiffies(TONEPORT_PCM_DELAY * 1000));
  	return 0;
- }","	schedule_delayed_work(&toneport->line6.startup_work,","	schedule_delayed_work(&toneport->pcm_work,",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-476 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_v_vuln.cpg.json
+ }","	schedule_delayed_work(&toneport->line6.startup_work,","	schedule_delayed_work(&toneport->pcm_work,",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-476 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_v_vuln.cpg.json
 pair_00078,CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_v,1,"static int fbcon_get_font(struct vc_data *vc, struct console_font *font)
 {
 	u8 *fontdata = vc->vc_font.data;
@@ -8494,7 +8494,7 @@ pair_00078,CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_v,1,"static
 +
  		for (i = 0; i < font->charcount; i++) {
  			memcpy(data, fontdata, j);
- 			memset(data + j, 0, 128 - j);",		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * (vc->vc_font.height * sizeof(u32)) > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-125 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_v_vuln.cpg.json
+ 			memset(data + j, 0, 128 - j);",		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * (vc->vc_font.height * sizeof(u32)) > FNTSIZE(fontdata))\n			return -EINVAL;\n\n		if (font->charcount * j > FNTSIZE(fontdata))\n			return -EINVAL;\n,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-125 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2020_28915_2660_Linux_Kernel_CWE_125_Testset_9fedeecb_v_vuln.cpg.json
 pair_00193,CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_v,1,"static int msr_open(struct inode *inode, struct file *file)
 {
 	unsigned int cpu;
@@ -8520,7 +8520,7 @@ pair_00193,CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_v,1,"static i
 +		return -EPERM;
  
  	cpu = iminor(file->f_path.dentry->d_inode);
- 	if (cpu >= nr_cpu_ids || !cpu_online(cpu))",\n	if (!capable(CAP_SYS_RAWIO))\n		return -EPERM;,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-264 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_v_vuln.cpg.json
+ 	if (cpu >= nr_cpu_ids || !cpu_online(cpu))",\n	if (!capable(CAP_SYS_RAWIO))\n		return -EPERM;,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-264 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2013_0268_153_Linux_Kernel_CWE_264_Testset_6e774f4e_v_vuln.cpg.json
 pair_00219,CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_p,0,"static ieee80211_tx_result
 ieee80211_tx_h_unicast_ps_buf(struct ieee80211_tx_data *tx)
 {
@@ -8619,7 +8619,7 @@ ieee80211_tx_h_unicast_ps_buf(struct ieee80211_tx_data *tx)
 +		spin_unlock(&sta->ps_lock);
  
  		if (!timer_pending(&local->sta_cleanup))
- 			mod_timer(&local->sta_cleanup,","\n		/* sync with ieee80211_sta_ps_deliver_wakeup */\n		spin_lock(&sta->ps_lock);\n		/*\n		 * STA woke up the meantime and all the frames on ps_tx_buf have\n		 * been queued to pending queue. No reordering can happen, go\n		 * ahead and Tx the packet.\n		 */\n		if (!test_sta_flag(sta, WLAN_STA_PS_STA) &&\n		    !test_sta_flag(sta, WLAN_STA_PS_DRIVER)) {\n			spin_unlock(&sta->ps_lock);\n			return TX_CONTINUE;\n		}\n\n		spin_unlock(&sta->ps_lock);",,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_p_patch.cpg.json
+ 			mod_timer(&local->sta_cleanup,","\n		/* sync with ieee80211_sta_ps_deliver_wakeup */\n		spin_lock(&sta->ps_lock);\n		/*\n		 * STA woke up the meantime and all the frames on ps_tx_buf have\n		 * been queued to pending queue. No reordering can happen, go\n		 * ahead and Tx the packet.\n		 */\n		if (!test_sta_flag(sta, WLAN_STA_PS_STA) &&\n		    !test_sta_flag(sta, WLAN_STA_PS_DRIVER)) {\n			spin_unlock(&sta->ps_lock);\n			return TX_CONTINUE;\n		}\n\n		spin_unlock(&sta->ps_lock);",,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2014_2706_496_Linux_Kernel_CWE_362_Testset_2478c8af_p_patch.cpg.json
 pair_00117,CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_p,0,"static unsigned long ioapic_read_indirect(struct kvm_ioapic *ioapic,
 					  unsigned long addr,
 					  unsigned long length)
@@ -8672,7 +8672,7 @@ pair_00117,CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_p,0,"static un
 -			redir_content = ioapic->redirtbl[redir_index].bits;
  			result = (ioapic->ioregsel & 0x1) ?
  			    (redir_content >> 32) & 0xffffffff :
- 			    redir_content & 0xffffffff;",			if (redir_index < IOAPIC_NUM_PINS)\n				redir_content =\n					ioapic->redirtbl[redir_index].bits;\n			else\n				redir_content = ~0ULL;,			ASSERT(redir_index < IOAPIC_NUM_PINS);\n			redir_content = ioapic->redirtbl[redir_index].bits;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-20 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_p_patch.cpg.json
+ 			    redir_content & 0xffffffff;",			if (redir_index < IOAPIC_NUM_PINS)\n				redir_content =\n					ioapic->redirtbl[redir_index].bits;\n			else\n				redir_content = ~0ULL;,			ASSERT(redir_index < IOAPIC_NUM_PINS);\n			redir_content = ioapic->redirtbl[redir_index].bits;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-20 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2013_1798_190_Linux_Kernel_CWE_20_Testset_48cbc58c_p_patch.cpg.json
 pair_00142,CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_p,0,"static int rawv6_recvmsg(struct kiocb *iocb, struct sock *sk,
 		  struct msghdr *msg, size_t len,
 		  int noblock, int flags, int *addr_len)
@@ -8768,7 +8768,7 @@ csum_copy_err:
 +		*addr_len = sizeof(*sin6);
  	}
  
- 	sock_recv_ts_and_drops(msg, sk, skb);",		*addr_len = sizeof(*sin6);,\n	if (addr_len)\n		*addr_len=sizeof(*sin6);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-200 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_p_patch.cpg.json
+ 	sock_recv_ts_and_drops(msg, sk, skb);",		*addr_len = sizeof(*sin6);,\n	if (addr_len)\n		*addr_len=sizeof(*sin6);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-200 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2013_7281_410_Linux_Kernel_CWE_200_Testset_fc913239_p_patch.cpg.json
 pair_00568,CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_p,0,"static int mon_bin_mmap(struct file *filp, struct vm_area_struct *vma)
 {
 	/* don't do anything here: ""fault"" will set up page table entries */
@@ -8795,7 +8795,7 @@ pair_00568,CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_p,0,"static
 +	vma->vm_flags &= ~VM_MAYWRITE;
  	vma->vm_flags |= VM_DONTEXPAND | VM_DONTDUMP;
  	vma->vm_private_data = filp->private_data;
- 	mon_bin_vma_open(vma);",\n	if (vma->vm_flags & VM_WRITE)\n		return -EPERM;\n\n	vma->vm_flags &= ~VM_MAYWRITE;,,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_p_patch.cpg.json
+ 	mon_bin_vma_open(vma);",\n	if (vma->vm_flags & VM_WRITE)\n		return -EPERM;\n\n	vma->vm_flags &= ~VM_MAYWRITE;,,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2022_43750_3741_Linux_Kernel_CWE_787_Testset_0466d740_p_patch.cpg.json
 pair_00574,CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_p,0,"static inline int ext4_valid_inum(struct super_block *sb, unsigned long ino)
 {
 	return ino == EXT4_ROOT_INO ||
@@ -8814,7 +8814,7 @@ pair_00574,CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_p,0,"static
 -		ino == EXT4_RESIZE_INO ||
  		(ino >= EXT4_FIRST_INO(sb) &&
  		 ino <= le32_to_cpu(EXT4_SB(sb)->s_es->s_inodes_count));
- }",,		ino == EXT4_USR_QUOTA_INO ||\n		ino == EXT4_GRP_QUOTA_INO ||\n		ino == EXT4_BOOT_LOADER_INO ||\n		ino == EXT4_JOURNAL_INO ||\n		ino == EXT4_RESIZE_INO ||,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_p_patch.cpg.json
+ }",,		ino == EXT4_USR_QUOTA_INO ||\n		ino == EXT4_GRP_QUOTA_INO ||\n		ino == EXT4_BOOT_LOADER_INO ||\n		ino == EXT4_JOURNAL_INO ||\n		ino == EXT4_RESIZE_INO ||,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2018_10882_1615_Linux_Kernel_CWE_787_Testset_d17896fe_p_patch.cpg.json
 pair_00239,CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_v,1,"static void copy_peercred(struct sock *sk, struct sock *peersk)
 {
 	put_pid(sk->sk_peer_pid);
@@ -8850,7 +8850,7 @@ pair_00239,CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_v,1,"static 
 +
 +	put_pid(old_pid);
 +	put_cred(old_cred);
- }","	const struct cred *old_cred;\n	struct pid *old_pid;\n\n	if (sk < peersk) {\n		spin_lock(&sk->sk_peer_lock);\n		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);\n	} else {\n		spin_lock(&peersk->sk_peer_lock);\n		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);\n	}\n	old_pid = sk->sk_peer_pid;\n	old_cred = sk->sk_peer_cred;\n\n	spin_unlock(&sk->sk_peer_lock);\n	spin_unlock(&peersk->sk_peer_lock);\n\n	put_pid(old_pid);\n	put_cred(old_cred);",	put_pid(sk->sk_peer_pid);\n	if (sk->sk_peer_cred)\n		put_cred(sk->sk_peer_cred);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-362 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_v_vuln.cpg.json
+ }","	const struct cred *old_cred;\n	struct pid *old_pid;\n\n	if (sk < peersk) {\n		spin_lock(&sk->sk_peer_lock);\n		spin_lock_nested(&peersk->sk_peer_lock, SINGLE_DEPTH_NESTING);\n	} else {\n		spin_lock(&peersk->sk_peer_lock);\n		spin_lock_nested(&sk->sk_peer_lock, SINGLE_DEPTH_NESTING);\n	}\n	old_pid = sk->sk_peer_pid;\n	old_cred = sk->sk_peer_cred;\n\n	spin_unlock(&sk->sk_peer_lock);\n	spin_unlock(&peersk->sk_peer_lock);\n\n	put_pid(old_pid);\n	put_cred(old_cred);",	put_pid(sk->sk_peer_pid);\n	if (sk->sk_peer_cred)\n		put_cred(sk->sk_peer_cred);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-362 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2021_4203_3149_Linux_Kernel_CWE_362_Testset_36e18dc2_v_vuln.cpg.json
 pair_00285,CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_p,0,"static struct prog_entry *
 predicate_parse(const char *str, int nr_parens, int nr_preds,
 		parse_pred_fn parse_pred, void *data,
@@ -9046,7 +9046,7 @@ out_free:
 +			}
  			*(++top) = invert;
  			continue;
- 		case '!':					/* #3 */",			if (top - op_stack > nr_parens) {\n				ret = -EINVAL;\n				goto out_free;\n			},			if (top - op_stack > nr_parens)\n				return ERR_PTR(-EINVAL);,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-401 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_p_patch.cpg.json
+ 		case '!':					/* #3 */",			if (top - op_stack > nr_parens) {\n				ret = -EINVAL;\n				goto out_free;\n			},			if (top - op_stack > nr_parens)\n				return ERR_PTR(-EINVAL);,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-401 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2019_19072_2153_Linux_Kernel_CWE_401_Testset_d60ed076_p_patch.cpg.json
 pair_00481,CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_p,0,"static int toneport_setup(struct usb_line6_toneport *toneport)
 {
 	u32 *ticks;
@@ -9088,7 +9088,7 @@ pair_00481,CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_p,0,"static
 +	schedule_delayed_work(&toneport->line6.startup_work,
  			      msecs_to_jiffies(TONEPORT_PCM_DELAY * 1000));
  	return 0;
- }","	schedule_delayed_work(&toneport->line6.startup_work,","	schedule_delayed_work(&toneport->pcm_work,",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-476 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_p_patch.cpg.json
+ }","	schedule_delayed_work(&toneport->line6.startup_work,","	schedule_delayed_work(&toneport->pcm_work,",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-476 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2019_15223_2012_Linux_Kernel_CWE_476_Testset_e8cc1e21_p_patch.cpg.json
 pair_00439,CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_v,1,"static void nft_lookup_activate(const struct nft_ctx *ctx,
 				const struct nft_expr *expr)
 {
@@ -9103,7 +9103,7 @@ pair_00439,CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_v,1,"static
  
 -	priv->set->use++;
 +	nf_tables_activate_set(ctx, priv->set);
- }","	nf_tables_activate_set(ctx, priv->set);",	priv->set->use++;,/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-416 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_v_vuln.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/vuln/CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_v_vuln.cpg.json
+ }","	nf_tables_activate_set(ctx, priv->set);",	priv->set->use++;,PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-416 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_v_vuln.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/vuln/CVE_2023_32233_4008_Linux_Kernel_CWE_416_Testset_d66459ce_v_vuln.cpg.json
 pair_00544,CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_p,0,"static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
 {
 	struct l2cap_conn *conn = hcon->l2cap_data;
@@ -9203,7 +9203,7 @@ pair_00544,CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_p,0,"stat
 +					       l2cap_build_conf_req(chan, buf, sizeof(buf)),
  					       buf);
  				chan->num_conf_req++;
- 			}","					       l2cap_build_conf_req(chan, buf, sizeof(buf)),","					       l2cap_build_conf_req(chan, buf),",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-787 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_p_patch.cpg.json
+ 			}","					       l2cap_build_conf_req(chan, buf, sizeof(buf)),","					       l2cap_build_conf_req(chan, buf),",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-787 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2017_1000251_1192_Linux_Kernel_CWE_787_Testset_7310e288_p_patch.cpg.json
 pair_00529,CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_p,0,"static void ipv4_send_dest_unreach(struct sk_buff *skb)
 {
 	struct net_device *dev;
@@ -9250,4 +9250,4 @@ pair_00529,CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_p,0,"static
 +		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);
  		rcu_read_unlock();
  
- 		if (res)","	struct net_device *dev;\n		dev = skb->dev ? skb->dev : skb_rtable(skb)->dst.dev;\n		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);","		res = __ip_options_compile(dev_net(skb->dev), &opt, skb, NULL);",/Users/vernetemmanueladjobi/Desktop/Experiments/test_samples/Linux Kernel CWE-476 Testset.json,/Users/vernetemmanueladjobi/Desktop/Experiments/test_c_files/CWE-CSV/CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_p_patch.c,/Users/vernetemmanueladjobi/Documents/RessourcesStages/Projets/structuaral_vulrag-Hybrid-System/data/datasets/test_cpg_files/patch/CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_p_patch.cpg.json
+ 		if (res)","	struct net_device *dev;\n		dev = skb->dev ? skb->dev : skb_rtable(skb)->dst.dev;\n		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);","		res = __ip_options_compile(dev_net(skb->dev), &opt, skb, NULL);",PATH_TO_FILE_IN_RAG_BUILDING/test_samples/Linux Kernel CWE-476 Testset.json,PATH_TO_FILE_IN_RAG_BUILDING/test_c_files/CWE-CSV/CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_p_patch.c,PATH_TO_FILE_IN_RAG_BUILDING/test_cpg_files/patch/CVE_2023_42754_4207_Linux_Kernel_CWE_476_Testset_b213ba26_p_patch.cpg.json
