@@ -1,7 +1,6 @@
 # Technical Report
 
-
-## Executive Summary
+# Executive Summary
 
 This report presents the development and evaluation of a novel hybrid vulnerability detection system designed specifically for C/C++ code, with particular emphasis on Linux kernel functions. Our approach extends the VulRAG methodology proposed by Du et al. (2024) through the strategic integration of structural pre-filtering using Code Property Graphs (CPGs) with sophisticated semantic re-ranking capabilities. This hybrid methodology synergistically combines the precision of structural pattern analysis with the contextual understanding capabilities of large language models.
 
@@ -18,9 +17,9 @@ These results demonstrate that hybrid approaches combining structural and semant
 
 \newpage
 
-## 1. Introduction
+# 1. Introduction
 
-### 1.1 Problem Statement
+## 1.1 Problem Statement
 
 Software vulnerabilities pose an escalating threat to cybersecurity infrastructure, with over 90,000 documented vulnerabilities now affecting critical systems worldwide. The exponential growth in software complexity, coupled with increasingly sophisticated attack vectors, necessitates robust automated vulnerability detection solutions capable of operating at scale while maintaining exceptional accuracy.
 
@@ -28,17 +27,61 @@ Current vulnerability detection approaches suffer from a fundamental architectur
 
 The VulRAG approach introduced by Du et al. (2024) demonstrated the transformative potential of retrieval-augmented generation for vulnerability detection. However, this methodology operates exclusively in the semantic domain, overlooking valuable opportunities to leverage structural similarities that could significantly enhance retrieval quality and detection accuracy.
 
-### 1.1.1 Research Hypothesis
+### Research Hypothesis
 
-We hypothesize that  **neither semantic similarities alone nor structural similarities alone are sufficient to comprehensively identify similar vulnerability patterns** . This limitation manifests in two critical scenarios:
+We hypothesize that **neither semantic similarities alone nor structural similarities alone are sufficient** to comprehensively identify similar vulnerability patterns. The following motivating examples illustrate why a hybrid approach is necessary.
 
- **Example 1 - Structural Limitation** : Consider two functions where one performs secure string copying using `strncpy` with proper bounds checking, while another uses the same API but contains a subtle off-by-one error in the length calculation. Pure structural analysis would identify these as highly similar due to identical API usage patterns, potentially missing the critical logical vulnerability in the bounds calculation.
+### Motivating Examples
 
- **Example 2 - Semantic Limitation** : Consider a buffer overflow vulnerability in a network packet parser versus a similar overflow in a file format parser. While both involve improper input validation leading to memory corruption, their semantic descriptions may focus on different domains (networking vs. file processing), causing semantic-only retrieval to miss the underlying structural similarity in their vulnerability patterns.
+1. Structural limitation: two functions with near-identical CPG signatures but different safety properties
 
-Our hypothesis suggests that **combining both structural and semantic analysis** will capture vulnerability patterns that either approach would miss in isolation, leading to improved detection coverage and accuracy.
+```c
+// Function A — Safe
+void safe_copy(char *dest, const char *src, size_t dest_size) {
+    strncpy(dest, src, dest_size - 1);  // leave room for \0
+    dest[dest_size - 1] = '\0';
+}
 
-### 1.2 Research Objectives
+// Function B — Vulnerable (off-by-one)
+void unsafe_copy(char *dest, const char *src, size_t dest_size) {
+    strncpy(dest, src, dest_size);      // subtle bug: no -1
+    dest[dest_size - 1] = '\0';        // potential overflow
+}
+```
+
+Purely structural analysis will often mark these as nearly identical: same API (strncpy), same parameter count and types, similar cyclomatic complexity, and similar control-flow patterns. Yet Function B contains a critical off-by-one that can trigger a buffer overflow when `src` length equals `dest_size`. The difference is a small arithmetic nuance (`dest_size` vs. `dest_size - 1`) that typical structural metrics fail to capture.
+
+2. Semantic limitation: structurally similar overflow patterns with divergent textual context
+
+```c
+// Vulnerability A — Network parser
+int parse_network_packet(unsigned char *packet, int len) {
+    char buffer[256];
+    int payload_len = *(int*)packet;          // unvalidated length
+    memcpy(buffer, packet + 4, payload_len);  // potential overflow
+    return process_network_data(buffer);
+}
+
+// Vulnerability B — Image file parser
+int parse_image_header(FILE *fp) {
+    char buffer[256];
+    int header_size;
+    fread(&header_size, sizeof(int), 1, fp);  // unvalidated size
+    fread(buffer, 1, header_size, fp);        // potential overflow
+    return parse_image_metadata(buffer);
+}
+```
+
+Both functions exhibit the same structural vulnerability pattern (read unvalidated size → copy into fixed buffer), but their semantic descriptions differ substantially: networking/protocol keywords versus image/file-format terms. A pure text-based search (e.g., BM25) over descriptions can miss this match because the lexical fields are disjoint despite identical structural risk.
+
+### Hybrid hypothesis validation
+
+* **Structural pre-filtering** captures the vulnerability-pattern similarity (unvalidated length → fixed-size copy), surfacing candidates that semantics alone may miss.
+* **Semantic re-ranking** then refines contextual relevance, rewarding examples whose purposes/behaviors align with the target.
+
+This combination identifies vulnerabilities that either approach alone would miss, improving both coverage and accuracy.
+
+## 1.2 Research Objectives
 
 This research addresses these limitations through the following objectives:
 
@@ -47,7 +90,7 @@ This research addresses these limitations through the following objectives:
 3. **Conduct comprehensive performance analysis** across multiple detection methodologies using standardized benchmarks
 4. **Analyze the fundamental trade-offs** between precision, recall, and computational efficiency in hybrid detection systems
 
-### 1.3 Contributions
+## 1.3 Contributions
 
 Our research delivers several key contributions to the vulnerability detection domain:
 
@@ -56,15 +99,15 @@ Our research delivers several key contributions to the vulnerability detection d
 * **Empirical analysis** of structural-semantic integration benefits in real-world vulnerability detection scenarios
 * **Open-source implementation** facilitating reproducible research and practical deployment in production environments
 
-## 2. Related Work
+# 2. Related Work
 
-### 2.1 Structural Vulnerability Detection
+## 2.1 Structural Vulnerability Detection
 
 The foundation of structural vulnerability detection was established by Yamaguchi et al. (2014) through their introduction of  **Code Property Graphs (CPGs)** . This groundbreaking approach unified Abstract Syntax Trees (AST), Control Flow Graphs (CFG), and Program Dependence Graphs (PDG) into a comprehensive representation capable of capturing both syntactic structure and semantic dependencies. The effectiveness of this methodology was demonstrated through the discovery of 88 vulnerabilities in the Linux kernel, including 18 previously unknown cases.
 
 Building upon this foundation, subsequent research has extended CPG-based analysis through machine learning integration. **Devign** (Zhou et al., 2019) pioneered the application of Graph Neural Networks to CPG representations, while **HiddenCPG** (Wi et al., 2022) introduced sophisticated techniques for learning hidden structural patterns within code graphs. Despite these advances, purely structural approaches remain constrained by their inability to capture semantic context and their dependence on substantial training datasets for effective pattern recognition.
 
-### 2.2 Large Language Models for Vulnerability Detection
+## 2.2 Large Language Models for Vulnerability Detection
 
 The emergence of large language models has fundamentally transformed code analysis capabilities, ushering in new possibilities for vulnerability detection. Advanced models such as **GPT-4** and **DeepSeek-Coder** demonstrate remarkable proficiency in understanding code semantics and can identify complex vulnerability patterns through sophisticated natural language reasoning. However, their systematic application to vulnerability detection encounters significant practical challenges.
 
@@ -78,7 +121,7 @@ However, effective prompt engineering demands **deep domain expertise** spanning
 
 The **manual nature of prompt engineering** further constrains adaptability. Prompts optimized for buffer overflow detection may prove ineffective for race condition vulnerabilities, requiring separate expertise and development cycles. As new vulnerability patterns emerge, the prompt engineering process must be continuously repeated, making comprehensive coverage across evolving threat landscapes increasingly challenging. This is precisely where Retrieval-Augmented Generation offers a compelling solution.
 
-### 2.3 Retrieval-Augmented Generation for Vulnerability Detection
+## 2.3 Retrieval-Augmented Generation for Vulnerability Detection
 
 **RAG addresses these fundamental limitations** by combining pre-trained language models with dynamic knowledge retrieval capabilities, enabling models to access relevant vulnerability examples without the computational costs of fine-tuning or the manual overhead of expert prompt engineering. The **economic advantages are substantial** – RAG approaches reduce operational costs by 60-80% compared to fine-tuning while maintaining adaptability through straightforward knowledge base updates.
 
@@ -88,9 +131,9 @@ However,  **the VulRAG approach operates exclusively in the semantic domain** , 
 
 This analysis reveals the need for more sophisticated retrieval mechanisms that strategically combine both structural and semantic similarity, precisely the gap our hybrid approach aims to address.
 
-## 3. System Architecture
+# 3. System Architecture
 
-### 3.1 Overall Pipeline
+## 3.1 Overall Pipeline
 
 Our hybrid system implements an innovative three-stage pipeline that synergistically combines structural and semantic analysis methodologies:
 
@@ -105,9 +148,9 @@ This architecture strategically addresses the limitations of mono-modal approach
 * **Enhanced relevance filtering** through multi-field semantic re-ranking
 * **Rich contextual grounding** for sophisticated LLM-based analysis
 
-### 3.2 Component Architecture
+## 3.2 Component Architecture
 
-#### 3.2.1 Structural Analysis Module
+### 3.2.1 Structural Analysis Module
 
  **CPG Extraction** : Leveraging the robust Joern framework, each C/C++ function undergoes transformation into a unified graph representation that seamlessly integrates AST, CFG, and PDG information. This multi-layered representation captures both explicit syntactic structure and implicit semantic dependencies essential for comprehensive vulnerability analysis.
 
@@ -121,7 +164,7 @@ This architecture strategically addresses the limitations of mono-modal approach
 
  **Similarity Search** : Extracted features are efficiently indexed using FAISS (Facebook AI Similarity Search) with L2 distance metrics, enabling rapid nearest-neighbor retrieval of structurally analogous functions from large code repositories.
 
-#### 3.2.2 Semantic Analysis Module
+### 3.2.2 Semantic Analysis Module
 
  **Multi-field Retrieval** : A sophisticated BM25-based retrieval system operates across three complementary semantic dimensions:
 
@@ -131,7 +174,7 @@ This architecture strategically addresses the limitations of mono-modal approach
 
  **Reciprocal Rank Fusion (RRF)** : Results from multiple semantic fields are intelligently combined using RRF with a carefully calibrated smoothing parameter (k=60), providing robust score aggregation across diverse semantic dimensions while minimizing field-specific biases.
 
-#### 3.2.3 LLM Analysis Module
+### 3.2.3 LLM Analysis Module
 
  **Iterative Detection** : The system orchestrates multiple sophisticated analysis passes:
 
@@ -141,9 +184,9 @@ This architecture strategically addresses the limitations of mono-modal approach
 
  **Robust Parsing** : Multiple parsing strategies ensure reliable handling of LLM response variations, incorporating keyword matching, pattern-based fallbacks, and confidence extraction mechanisms for consistent result interpretation.
 
-## 4. Implementation Details
+# 4. Implementation Details
 
-### 4.1 Structural Feature Engineering
+## 4.1 Structural Feature Engineering
 
 The 25-dimensional CPG signature systematically captures comprehensive structural characteristics across multiple analytical dimensions:
 
@@ -156,7 +199,7 @@ The 25-dimensional CPG signature systematically captures comprehensive structura
 | **CWE Categories (9)**    | Various dangerous call counts                        | Vulnerability-specific function usage patterns |
 | **Meta Features (2)**     | total_dangerous_calls, is_flat_cpg                   | Aggregate risk indicators                      |
 
-### 4.2 CWE-Categorized Dangerous Calls
+## 4.2 CWE-Categorized Dangerous Calls
 
 Our system systematically tracks nine categories of potentially dangerous function calls, each mapped to specific Common Weakness Enumeration (CWE) classifications:
 
@@ -172,7 +215,7 @@ Our system systematically tracks nine categories of potentially dangerous functi
 | **CWE-401**     | allocation functions          | Resource leak conditions         |
 | **CWE-476**     | pointer dereference functions | Null pointer dereference risks   |
 
-### 4.3 Semantic Description Generation
+## 4.3 Semantic Description Generation
 
  **Purpose Extraction Prompt** :
 
@@ -196,7 +239,7 @@ Code: {code}
 Response: Provide a clear step-by-step description of the function's behavior.
 ```
 
-### 4.4 Configuration Parameters
+## 4.4 Configuration Parameters
 
 | Parameter                     | Value | Description                            |
 | ----------------------------- | ----- | -------------------------------------- |
@@ -208,7 +251,7 @@ Response: Provide a clear step-by-step description of the function's behavior.
 | `VOTE_WEIGHT_SAFE_SOLUTION` | 0.65  | Weight for safe-with-solution votes    |
 | `VOTE_WEIGHT_SAFE_DEFAULT`  | 0.5   | Default weight for safe votes          |
 
-### 4.5 Reproducibility and Environment
+## 4.5 Reproducibility and Environment
 
  **Environment Requirements** :
 
@@ -244,9 +287,9 @@ python evaluation.py --method structural_vulrag
  **Note** : Results are systematically stored in timestamped CSV/JSON formats under the `results/` directory for comprehensive analysis and reproducibility.
  Refer to [here](https://github.com/realpikiss/Hybrid-detector) for project repository.
 
-## 5. Experimental Methodology
+# 5. Experimental Methodology
 
-### 5.1 Dataset Description
+## 5.1 Dataset Description
 
  **Evaluation Corpus** : Our analysis employed 100 carefully selected Linux kernel functions, representing a strategically sampled subset from a comprehensive 1,172-function test collection. This focused evaluation approach was necessitated by practical constraints including time limitations and API quota restrictions that emerged during extensive testing phases.
 
@@ -265,7 +308,7 @@ The corpus maintains rigorous balance and diversity:
 
  **Data Provenance** : The evaluation dataset (`data/evaluation_set.csv`) and associated knowledge base artifacts (`data/kb.json`, `data/faiss.index`) are generated through a sophisticated pipeline implemented in the companion `RagKb_internship` repository. Machine-specific absolute paths have been systematically normalized to portable placeholders prefixed with `PATH_TO_FILE_IN_RAG_BUILDING/` to ensure cross-platform compatibility.
 
-### 5.2 Evaluation Methods
+## 5.2 Evaluation Methods
 
 Our comprehensive evaluation encompasses four distinct detection methodologies, each representing different philosophical approaches to vulnerability identification:
 
@@ -274,7 +317,7 @@ Our comprehensive evaluation encompasses four distinct detection methodologies, 
 3. **VulRAG** : Multi-field BM25 retrieval with LLM analysis, serving as the semantic baseline
 4. **Structural VulRAG** : Our novel hybrid approach integrating structural pre-filtering with semantic analysis
 
-### 5.3 Metrics
+## 5.3 Metrics
 
 Our evaluation employs standard binary classification metrics to ensure comparability with existing literature:
 
@@ -290,9 +333,9 @@ Our evaluation employs standard binary classification metrics to ensure comparab
 * **TN (True Negatives)** : Safe functions correctly identified
 * **FN (False Negatives)** : Vulnerable functions missed by the detection system
 
-## 6. Results and Analysis
+# 6. Results and Analysis
 
-### 6.1 Overall Performance Comparison
+## 6.1 Overall Performance Comparison
 
 | Method                      | Accuracy        | Precision       | Recall          | F1-Score        | TP | FP | TN | FN |
 | --------------------------- | --------------- | --------------- | --------------- | --------------- | -- | -- | -- | -- |
@@ -301,7 +344,7 @@ Our evaluation employs standard binary classification metrics to ensure comparab
 | **Structural Only**   | 0.570           | 0.667           | 0.280           | 0.394           | 14 | 7  | 43 | 36 |
 | **Raw LLM**           | 0.520           | 0.526           | 0.400           | 0.455           | 20 | 18 | 32 | 30 |
 
-### 6.2 Key Findings
+## 6.2 Key Findings
 
  **Superior Balanced Performance** : The **Structural VulRAG** hybrid method achieved the highest F1-score (0.565), representing a **1.98% improvement** over the established VulRAG baseline. This improvement demonstrates the tangible value of structural pre-filtering in enhancing overall detection quality while maintaining practical applicability.
 
@@ -313,9 +356,9 @@ Our evaluation employs standard binary classification metrics to ensure comparab
 
  **System Robustness** : All methodologies achieved **100% execution success** with zero system errors across the complete 100-sample evaluation, confirming robust implementation suitable for production deployment scenarios.
 
-### 6.3 Confusion Matrix Analysis
+## 6.3 Confusion Matrix Analysis
 
-#### Structural VulRAG (Hybrid Method)
+### Structural VulRAG (Hybrid Method)
 
 ```
                 Predicted
@@ -332,33 +375,33 @@ Total         35      65    100
 * **True Negative Rate** : 78% (39/50) of safe functions correctly identified
 * **False Negative Rate** : 52% (26/50) of vulnerable functions missed
 
-### 6.4 Method-Specific Performance Analysis
+## 6.4 Method-Specific Performance Analysis
 
-#### 6.4.1 Structural Only Performance
+### 6.4.1 Structural Only Performance
 
 * **Key Strengths** : Achieved highest precision (66.7%), demonstrating that structural patterns provide reliable indicators when properly identified
 * **Primary Weaknesses** : Exhibited lowest recall (28.0%), systematically missing semantically complex vulnerabilities
 * **Strategic Implications** : Pure structural analysis proves conservative but fundamentally limited in comprehensive coverage
 
-#### 6.4.2 Raw LLM Performance
+### 6.4.2 Raw LLM Performance
 
 * **Operational Advantages** : Complete independence from external knowledge bases, enabling deployment in isolated environments
 * **Performance Limitations** : Demonstrated lowest overall performance across all metrics, highlighting insufficient context for reliable analysis
 * **Practical Implications** : Context-free LLM analysis proves inadequate for systematic vulnerability detection in production scenarios
 
-#### 6.4.3 VulRAG Baseline Performance
+### 6.4.3 VulRAG Baseline Performance
 
 * **Notable Strengths** : Achieved highest precision (69.7%) while maintaining reasonable recall balance
 * **Comparative Weaknesses** : Demonstrated slightly lower recall compared to the hybrid approach
 * **Research Implications** : Semantic-only retrieval proves highly effective but benefits significantly from structural enhancement
 
-#### 6.4.4 Structural VulRAG (Hybrid) Performance
+### 6.4.4 Structural VulRAG (Hybrid) Performance
 
 * **Primary Advantages** : Delivered best F1-score and achieved highest recall among all tested methods
 * **Performance Trade-offs** : Exhibited marginally lower precision than baseline VulRAG
 * **Strategic Value** : Structural pre-filtering demonstrably improves recall while maintaining operationally acceptable precision
 
-### 6.5 Error Analysis
+## 6.5 Error Analysis
 
  **False Positive Pattern Analysis** :
 
@@ -372,9 +415,9 @@ Total         35      65    100
 2. **Domain-Specific Vulnerabilities** : Kernel-specific vulnerability patterns underrepresented in the knowledge base
 3. **Novel Attack Vectors** : Emerging vulnerability patterns absent from historical training examples
 
-## 7. Discussion
+# 7. Discussion
 
-### 7.1 Hybrid Approach Benefits
+## 7.1 Hybrid Approach Benefits
 
  **Enhanced Recall Achievement** : The strategic integration of structural pre-filtering with semantic re-ranking yielded the highest recall (48.0%) among all tested approaches. This improvement suggests that structural guidance effectively identifies relevant semantic patterns that pure semantic search methodologies consistently miss, representing a fundamental advancement in retrieval quality.
 
@@ -382,7 +425,7 @@ Total         35      65    100
 
  **Computational Efficiency Gains** : Structural pre-filtering dramatically reduces the semantic search space from thousands of candidates to manageable sets of tens, delivering significant computational efficiency improvements while maintaining or enhancing detection quality—a crucial advantage for large-scale deployment scenarios.
 
-### 7.2 Structural Pre-filtering Impact
+## 7.2 Structural Pre-filtering Impact
 
  **Dramatic Search Space Reduction** : The implemented two-stage retrieval process (structural → semantic) achieves approximately 99% candidate space reduction, efficiently narrowing from ~2,300 knowledge base entries to 10 structural candidates to 3 final candidates for LLM analysis.
 
@@ -390,7 +433,7 @@ Total         35      65    100
 
  **System Robustness** : The structural component establishes a stable analytical foundation that proves less sensitive to lexical variations and coding style differences, enhancing overall system reliability across diverse codebases.
 
-### 7.3 Practical Implications
+## 7.3 Practical Implications
 
  **Industrial Deployment Viability** : The achieved 68.6% precision rate indicates that approximately 7 out of 10 flagged vulnerabilities represent genuine security concerns, establishing a reasonable false positive rate acceptable for security-critical applications requiring manual verification processes.
 
@@ -398,9 +441,9 @@ Total         35      65    100
 
  **Cost-Benefit Optimization** : The hybrid approach successfully balances detection coverage with computational efficiency, making it particularly suitable for continuous integration pipelines and large-scale automated code analysis systems.
 
-## 8. Limitations and Future Work
+# 8. Limitations and Future Work
 
-### 8.1 Current Limitations
+## 8.1 Current Limitations
 
  **Dataset Scope Constraints** : While our evaluation on 100 Linux kernel functions provides valuable insights, this scope may not comprehensively represent the broader landscape of C/C++ vulnerabilities across diverse domains, coding styles, and application contexts.
 
@@ -410,7 +453,7 @@ Total         35      65    100
 
  **Knowledge Base Dependency** : The effectiveness of retrieval-based approaches remains fundamentally dependent on the comprehensiveness and quality of the underlying knowledge base, creating potential blind spots for underrepresented vulnerability patterns.
 
-### 8.2 Threats to Validity
+## 8.2 Threats to Validity
 
  **Internal Validity Concerns** :
 
@@ -430,9 +473,9 @@ Total         35      65    100
 * False positive costs remain unquantified in current evaluation frameworks
 * Absence of detection latency and computational overhead assessments
 
-### 8.3 Future Research Directions
+## 8.3 Future Research Directions
 
-#### 8.3.1 Short-term Improvements
+### 8.3.1 Short-term Improvements
 
  **Enhanced Retrieval Mechanisms** :
 
@@ -446,7 +489,7 @@ Total         35      65    100
 * Integrate calibrated decision thresholds using Platt scaling or isotonic regression methods
 * Develop adaptive threshold mechanisms based on vulnerability severity and context
 
-#### 8.3.2 Medium-term Enhancements
+### 8.3.2 Medium-term Enhancements
 
  **Multi-class Classification Systems** :
 
@@ -460,7 +503,7 @@ Total         35      65    100
 * Implement uncertainty sampling strategies for targeted data collection
 * Create interactive debugging tools for systematic false positive analysis
 
-#### 8.3.3 Long-term Vision
+### 8.3.3 Long-term Vision
 
  **Cross-language Generalization** :
 
@@ -480,7 +523,7 @@ Total         35      65    100
 * Implement reinforcement learning for adaptive threshold selection
 * Develop explainable AI techniques for comprehensive vulnerability explanation
 
-## 9. Conclusion
+# 9. Conclusion
 
 This research introduces a groundbreaking hybrid vulnerability detection system that successfully integrates structural Code Property Graph analysis with semantic retrieval-augmented generation, establishing new benchmarks for balanced vulnerability detection performance. Our investigation yields several significant contributions and findings that advance the state of cybersecurity research.
 
@@ -508,7 +551,7 @@ Our open-source implementation is available at [here](https://github.com/realpik
 
 \newpage
 
-## 10. References
+# 10. References
 
 1. **Cormack, G. V., Clarke, C. L., & Buettcher, S.** (2009). Reciprocal rank fusion outperforms condorcet and individual rank learning methods.  *Proceedings of the 32nd International ACM SIGIR Conference* .
 2. **Du, X., Li, M., Wang, D., & Zhang, Y.** (2024). VulRAG: Enhancing LLM-based Vulnerability Detection via Knowledge-augmented Generation.  *arXiv preprint arXiv:2401.15939* .
